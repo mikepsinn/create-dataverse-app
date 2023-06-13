@@ -5,10 +5,12 @@ import { Context } from "../context";
 export function useWallet() {
   const { runtimeConnector } = useContext(Context);
   const [wallet, setWallet] = useState<WALLET>();
+  const [address, setAddress] = useState<string>();
 
   const connectWallet = async () => {
-    const { address, wallet } = await runtimeConnector.connectWallet();
+    const { wallet, address, chain } = await runtimeConnector.connectWallet();
     console.log("Connect res:", { address, wallet });
+    setAddress(address);
     setWallet(wallet);
     return {
       address,
@@ -57,6 +59,7 @@ export function useWallet() {
 
   return {
     wallet,
+    address,
     connectWallet,
     switchNetwork,
     sign,

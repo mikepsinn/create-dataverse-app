@@ -8,6 +8,7 @@ export default defineConfig({
     alias: {
       web3: "web3/dist/web3.min.js",
       // buffer: "rollup-plugin-node-polyfills/polyfills/buffer-es6", // add buffer
+      events: "rollup-plugin-node-polyfills/polyfills/events",
     },
   },
   build: {
