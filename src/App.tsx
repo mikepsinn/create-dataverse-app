@@ -30,7 +30,7 @@ function App() {
     (async () => {
       console.log(output);
       const pushChatMessageModel = output.createDapp.streamIDs.find(
-        (item) => item.name === "push_test001_pushchatmessage"
+        (item) => item.name === "push_test003_pushchatmessage"
       );
 
       const pushChannelModel = output.createDapp.streamIDs.find(
@@ -44,6 +44,7 @@ function App() {
           output.createDapp.name,
           ENV.STAGING
         );
+        console.log(pushChatClient);
         pushChatClientRef.current = pushChatClient;
       }
 
@@ -274,9 +275,8 @@ function App() {
       <br />
       <button
         onClick={async () => {
-          console.log(111);
           const user = await pushChatClientRef.current?.createPushChatUser();
-          console.log(user);
+          console.log("CreatePushChatUser: response: ", user);
         }}
       >
         createPushChatUser
@@ -286,7 +286,7 @@ function App() {
         onClick={async () => {
           const msgCont = "chatMsg";
           const msgType = "Text";
-          const receiver = "0x312eA852726E3A9f633A0377c0ea882086d66666";
+          const receiver = "0xd10d5b408A290a5FD0C2B15074995e899E944444";
 
           const response = await pushChatClientRef.current?.sendChatMessage(
             receiver,
@@ -298,6 +298,22 @@ function App() {
         }}
       >
         sendChatMessage
+      </button>
+      <br />
+      <button
+        onClick={async () => {
+          const receiver = "0xd10d5b408A290a5FD0C2B15074995e899E944444";
+          const limit = 30;
+
+          const response = await pushChatClientRef.current?.fetchHistoryChats(
+            receiver,
+            limit
+          );
+
+          console.log("FetchHistoryChats: response: ", response);
+        }}
+      >
+        fetchHistoryChats
       </button>
     </div>
   );
