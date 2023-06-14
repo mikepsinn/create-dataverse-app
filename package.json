@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/dataverse-os/create-dataverse-app#readme",
   "dependencies": {
+    "@dataverse/push-client-toolkit": "^1.0.4",
     "@dataverse/runtime-connector": "1.0.57",
     "buffer": "^6.0.3",
     "chalk": "^4.1.2",
