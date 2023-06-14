@@ -9,7 +9,13 @@ import {
   PushNotificationClient,
   PushChatClient,
   ENV,
+  ModelName,
 } from "@dataverse/push-client-toolkit";
+
+import LivepeerClient from "@dataverse/livepeer-client-toolkit";
+
+import TablelandClient from "@dataverse/tableland-client-toolkit";
+import { Network } from "@dataverse/tableland-client-toolkit";
 
 function App() {
   const { appVersion, postModel, output, runtimeConnector } =
@@ -23,29 +29,81 @@ function App() {
   const [monetizedPost, setMonetizedPost] = useState<StreamRecord>();
   const [unlockedPost, setUnlockedPost] = useState<StreamRecord>();
   const [pushChannelModel, setPushChannelModel] = useState<Model>();
-  const { address, connectWallet } = useWallet();
   const pushChatClientRef = useRef<PushChatClient>();
+  const livepeerClientRef = useRef<LivepeerClient>();
+  const tablelandClientRef = useRef<TablelandClient>();
+  const [tableId, setTableId] = useState<string>();
+  const [tableName, setTableName] = useState<string>();
+
+  const { address, connectWallet, switchNetwork } = useWallet();
 
   useEffect(() => {
     (async () => {
-      console.log(output);
+      const name = output.createDapp.name;
+      const slug = output.createDapp.slug;
+
       const pushChatMessageModel = output.createDapp.streamIDs.find(
-        (item) => item.name === "push_test003_pushchatmessage"
+        (item) => item.name === `${slug}_pushchatmessage`
       );
 
       const pushChannelModel = output.createDapp.streamIDs.find(
-        (item) => item.name === "push_test003_pushchannel"
+        (item) => item.name === `${slug}_pushchannel`
       );
 
+      const pushGPGKeyModel = output.createDapp.streamIDs.find(
+        (item) => item.name === `${slug}_pushpgpkey`
+      );
+
+      const pushnotificationModel = output.createDapp.streamIDs.find(
+        (item) => item.name === `${slug}_pushnotification`
+      );
+
+      const livepeerModel = output.createDapp.streamIDs.find(
+        (item) => item.name === `${slug}_livepeer`
+      );
+
+      const tablelandModel = output.createDapp.streamIDs.find(
+        (item) => item.name === `${slug}_livepeer`
+      );
+
+      // console.log({
+      //   [ModelName.MESSAGE]: pushChatMessageModel?.stream_id!,
+      //   [ModelName.USER_PGP_KEY]: pushGPGKeyModel?.stream_id!,
+      //   [ModelName.CHANNEL]: pushChannelModel?.stream_id!,
+      //   [ModelName.NOTIFICATION]: pushnotificationModel?.stream_id!,
+      // });
+
       if (pushChatMessageModel) {
-        const pushChatClient = new PushChatClient(
+        const pushChatClient = new PushChatClient({
           runtimeConnector,
-          pushChatMessageModel.stream_id,
-          output.createDapp.name,
-          ENV.STAGING
-        );
-        console.log(pushChatClient);
+          modelIds: {
+            [ModelName.MESSAGE]: pushChatMessageModel?.stream_id!,
+            [ModelName.USER_PGP_KEY]: pushGPGKeyModel?.stream_id!,
+            [ModelName.CHANNEL]: pushChannelModel?.stream_id!,
+            [ModelName.NOTIFICATION]: pushnotificationModel?.stream_id!,
+          },
+          appName: output.createDapp.name,
+          env: ENV.STAGING,
+        });
         pushChatClientRef.current = pushChatClient;
+      }
+
+      // if (tablelandModel) {
+      const tablelandClient = new TablelandClient({
+        runtimeConnector,
+        network: Network.MUMBAI,
+      });
+      tablelandClientRef.current = tablelandClient;
+      // }
+
+      if (livepeerModel) {
+        const livepeerClient = new LivepeerClient({
+          apiKey: "69ecb5ef-9f70-41f3-8a65-1bac0de4eff7",
+          runtimeConnector,
+          modelId: livepeerModel.stream_id,
+          appName: name,
+        });
+        livepeerClientRef.current = livepeerClient;
       }
 
       if (pushChannelModel) {
@@ -222,6 +280,85 @@ function App() {
     setUnlockedPost(streamRecord as StreamRecord);
   };
 
+  const createPushChatUser = async () => {
+    const user = await pushChatClientRef.current?.createPushChatUser();
+    console.log("CreatePushChatUser: response: ", user);
+  };
+
+  const sendChatMessage = async () => {
+    const msgCont = "chatMsg";
+    const msgType = "Text";
+    const receiver = "0x6ed14ee482d3C4764C533f56B90360b767d21D5E";
+
+    const response = await pushChatClientRef.current?.sendChatMessage(
+      receiver,
+      msgCont,
+      msgType
+    );
+
+    console.log("SendMsg: response: ", response);
+  };
+
+  const fetchHistoryChats = async () => {
+    const receiver = "0x6ed14ee482d3C4764C533f56B90360b767d21D5E";
+    const limit = 30;
+
+    const response = await pushChatClientRef.current?.fetchHistoryChats(
+      receiver,
+      limit
+    );
+
+    console.log("FetchHistoryChats: response: ", response);
+  };
+
+  const createTable = async () => {
+    await switchNetwork(80001);
+
+    const CREATE_TABLE_SQL =
+      "CREATE TABLE test_table (id integer primary key, record text)";
+    console.log(tablelandClientRef.current);
+    const res = await tablelandClientRef.current?.createTable(
+      address!,
+      CREATE_TABLE_SQL
+    );
+    setTableId(res?.tableId);
+    setTableName(`${res?.tableName}_${res?.chainId}_${res?.tableId}`);
+    console.log("CreateTable: response: ", res);
+  };
+
+  const insertTable = async () => {
+    const MUTATE_TABLE_SQL = `INSERT INTO ${tableName} (id, record) values(1, 'hello man01')`;
+
+    const res = await tablelandClientRef.current?.mutateTable(
+      address!,
+      tableId!,
+      MUTATE_TABLE_SQL
+    );
+    console.log("InsertTable: response: ", res);
+  };
+
+  const updateTable = async () => {
+    const UPDATE_TABLE_SQL = `UPDATE ${tableName} SET record = 'hello man02' WHERE id = 1`;
+
+    const res = await tablelandClientRef.current?.mutateTable(
+      address!,
+      tableId!,
+      UPDATE_TABLE_SQL
+    );
+    console.log("UpdateTable: response: ", res);
+  };
+
+  const getTableByTableId = async () => {
+    const tablelandClient = tablelandClientRef.current;
+    const tableName = await tablelandClient?.getTableNameById(tableId!);
+    if (tableName) {
+      const result = await tablelandClient?.getTableByName(tableName);
+      console.log("GetTableByTableId:", result);
+    } else {
+      console.error("getTableNameById failed");
+    }
+  };
+
   return (
     <div className="App">
       <button onClick={connect}>connect</button>
@@ -273,48 +410,14 @@ function App() {
         </div>
       )}
       <br />
-      <button
-        onClick={async () => {
-          const user = await pushChatClientRef.current?.createPushChatUser();
-          console.log("CreatePushChatUser: response: ", user);
-        }}
-      >
-        createPushChatUser
-      </button>
+      <button onClick={createPushChatUser}>createPushChatUser</button>
+      <button onClick={sendChatMessage}>sendChatMessage</button>
+      <button onClick={fetchHistoryChats}>fetchHistoryChats</button>
       <br />
-      <button
-        onClick={async () => {
-          const msgCont = "chatMsg";
-          const msgType = "Text";
-          const receiver = "0xd10d5b408A290a5FD0C2B15074995e899E944444";
-
-          const response = await pushChatClientRef.current?.sendChatMessage(
-            receiver,
-            msgCont,
-            msgType
-          );
-
-          console.log("SendMsg: response: ", response);
-        }}
-      >
-        sendChatMessage
-      </button>
-      <br />
-      <button
-        onClick={async () => {
-          const receiver = "0xd10d5b408A290a5FD0C2B15074995e899E944444";
-          const limit = 30;
-
-          const response = await pushChatClientRef.current?.fetchHistoryChats(
-            receiver,
-            limit
-          );
-
-          console.log("FetchHistoryChats: response: ", response);
-        }}
-      >
-        fetchHistoryChats
-      </button>
+      <button onClick={createTable}>createTable</button>
+      <button onClick={insertTable}>insertTable</button>
+      <button onClick={updateTable}>updateTable</button>
+      <button onClick={getTableByTableId}>getTableByTableId</button>
     </div>
   );
 }
