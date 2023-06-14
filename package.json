@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/dataverse-os/create-dataverse-app#readme",
   "dependencies": {
-    "@dataverse/livepeer-client-toolkit": "1.0.4",
+    "@dataverse/livepeer-client-toolkit": "^1.0.4",
     "@dataverse/push-client-toolkit": "^1.0.5",
     "@dataverse/runtime-connector": "1.0.57",
     "@dataverse/tableland-client-toolkit": "^1.0.3",
