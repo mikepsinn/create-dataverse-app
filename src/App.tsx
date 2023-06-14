@@ -50,8 +50,8 @@ function App() {
         (item) => item.name === `${slug}_pushchannel`
       );
 
-      const pushGPGKeyModel = output.createDapp.streamIDs.find(
-        (item) => item.name === `${slug}_pushpgpkey`
+      const pushChatGPGKeyModel = output.createDapp.streamIDs.find(
+        (item) => item.name === `${slug}_pushchatgpgkey`
       );
 
       const pushnotificationModel = output.createDapp.streamIDs.find(
@@ -63,7 +63,7 @@ function App() {
       );
 
       const tablelandModel = output.createDapp.streamIDs.find(
-        (item) => item.name === `${slug}_livepeer`
+        (item) => item.name === `${slug}_tableland`
       );
 
       // console.log({
@@ -78,7 +78,7 @@ function App() {
           runtimeConnector,
           modelIds: {
             [ModelName.MESSAGE]: pushChatMessageModel?.stream_id!,
-            [ModelName.USER_PGP_KEY]: pushGPGKeyModel?.stream_id!,
+            [ModelName.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
             [ModelName.CHANNEL]: pushChannelModel?.stream_id!,
             [ModelName.NOTIFICATION]: pushnotificationModel?.stream_id!,
           },
