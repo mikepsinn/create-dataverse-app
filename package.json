@@ -22,7 +22,7 @@
     "@dataverse/livepeer-client-toolkit": "1.0.5",
     "@dataverse/push-client-toolkit": "1.0.6",
     "@dataverse/runtime-connector": "1.0.57",
-    "@dataverse/tableland-client-toolkit": "1.0.5",
+    "@dataverse/tableland-client-toolkit": "1.0.10",
     "@livepeer/react": "^2.5.5",
     "buffer": "^6.0.3",
     "chalk": "^4.1.2",

@@ -9,7 +9,7 @@ import {
   PushNotificationClient,
   PushChatClient,
   ENV,
-  ModelName,
+  ModelName as PushModelName,
   getICAPAddress,
 } from "@dataverse/push-client-toolkit";
 
@@ -17,7 +17,9 @@ import LivepeerClient, {
   LivepeerConfig,
 } from "@dataverse/livepeer-client-toolkit";
 
-import TablelandClient from "@dataverse/tableland-client-toolkit";
+import TablelandClient, {
+  ModelName as TablelandModelName,
+} from "@dataverse/tableland-client-toolkit";
 import { Network } from "@dataverse/tableland-client-toolkit";
 import { AssetsCreator, LivepeerPlayer } from "./components/Livepeer";
 
@@ -69,24 +71,17 @@ function App() {
       );
 
       const tablelandModel = output.createDapp.streamIDs.find(
-        (item) => item.name === `${slug}_tableland`
+        (item) => item.name === `${slug}_table`
       );
-
-      // console.log({
-      //   [ModelName.MESSAGE]: pushChatMessageModel?.stream_id!,
-      //   [ModelName.USER_PGP_KEY]: pushGPGKeyModel?.stream_id!,
-      //   [ModelName.CHANNEL]: pushChannelModel?.stream_id!,
-      //   [ModelName.NOTIFICATION]: pushNotificationModel?.stream_id!,
-      // });
 
       if (pushChatMessageModel) {
         const pushChatClient = new PushChatClient({
           runtimeConnector,
           modelIds: {
-            [ModelName.MESSAGE]: pushChatMessageModel?.stream_id!,
-            [ModelName.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
-            [ModelName.CHANNEL]: pushChannelModel?.stream_id!,
-            [ModelName.NOTIFICATION]: pushNotificationModel?.stream_id!,
+            [PushModelName.MESSAGE]: pushChatMessageModel?.stream_id!,
+            [PushModelName.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
+            [PushModelName.CHANNEL]: pushChannelModel?.stream_id!,
+            [PushModelName.NOTIFICATION]: pushNotificationModel?.stream_id!,
           },
           appName: output.createDapp.name,
           env: ENV.STAGING,
@@ -98,10 +93,10 @@ function App() {
         const pushNotificationClient = new PushNotificationClient({
           runtimeConnector,
           modelIds: {
-            [ModelName.MESSAGE]: pushChatMessageModel?.stream_id!,
-            [ModelName.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
-            [ModelName.CHANNEL]: pushChannelModel?.stream_id!,
-            [ModelName.NOTIFICATION]: pushNotificationModel?.stream_id!,
+            [PushModelName.MESSAGE]: pushChatMessageModel?.stream_id!,
+            [PushModelName.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
+            [PushModelName.CHANNEL]: pushChannelModel?.stream_id!,
+            [PushModelName.NOTIFICATION]: pushNotificationModel?.stream_id!,
           },
           appName: output.createDapp.name,
           env: ENV.STAGING,
@@ -109,13 +104,16 @@ function App() {
         pushNotificationClientRef.current = pushNotificationClient;
       }
 
-      // if (tablelandModel) {
-      const tablelandClient = new TablelandClient({
-        runtimeConnector,
-        network: Network.MUMBAI,
-      });
-      tablelandClientRef.current = tablelandClient;
-      // }
+      if (tablelandModel) {
+        const tablelandClient = new TablelandClient({
+          runtimeConnector,
+          network: Network.MUMBAI,
+          modelIds: {
+            [TablelandModelName.TABLE]: tablelandModel?.stream_id!,
+          },
+        });
+        tablelandClientRef.current = tablelandClient;
+      }
 
       if (livepeerModel) {
         const livepeerClient = new LivepeerClient({
@@ -156,18 +154,16 @@ function App() {
     const date = new Date().toISOString();
     const { streamId, ...streamRecord } = await createPublicStream({
       pkh,
-      model: pushChannelModel as Model,
+      model: postModel,
       stream: {
-        channel: "test",
-        ipfshash: "bafkreib76wz6wewtkfmp5rhm3ep6tf4xjixvzzyh64nbyge5yhjno24yl4",
-        // appVersion,
-        // text: "hello",
-        // images: [
-        //   "https://bafkreib76wz6wewtkfmp5rhm3ep6tf4xjixvzzyh64nbyge5yhjno24yl4.ipfs.w3s.link",
-        // ],
-        // videos: [],
-        // createdAt: date,
-        // updatedAt: date,
+        appVersion,
+        text: "hello",
+        images: [
+          "https://bafkreib76wz6wewtkfmp5rhm3ep6tf4xjixvzzyh64nbyge5yhjno24yl4.ipfs.w3s.link",
+        ],
+        videos: [],
+        createdAt: date,
+        updatedAt: date,
       },
     });
 
@@ -178,25 +174,21 @@ function App() {
   const createEncryptedPost = async () => {
     const date = new Date().toISOString();
     const { streamId, ...streamRecord } = await createEncryptedStream({
-      model: pushChannelModel as Model,
+      model: postModel,
       stream: {
-        channel: "test",
-        ipfshash: "bafkreib76wz6wewtkfmp5rhm3ep6tf4xjixvzzyh64nbyge5yhjno24yl4",
-        // appVersion,
-        // text: "hello",
-        // images: [
-        //   "https://bafkreib76wz6wewtkfmp5rhm3ep6tf4xjixvzzyh64nbyge5yhjno24yl4.ipfs.w3s.link",
-        // ],
-        // videos: [],
-        // createdAt: date,
-        // updatedAt: date,
+        appVersion,
+        text: "hello",
+        images: [
+          "https://bafkreib76wz6wewtkfmp5rhm3ep6tf4xjixvzzyh64nbyge5yhjno24yl4.ipfs.w3s.link",
+        ],
+        videos: [],
+        createdAt: date,
+        updatedAt: date,
       },
       encrypted: {
-        channel: true,
-        ipfshash: true,
-        // text: true,
-        // images: true,
-        // videos: false,
+        text: true,
+        images: true,
+        videos: false,
       },
     });
 
@@ -208,30 +200,25 @@ function App() {
     const date = new Date().toISOString();
     const { streamId, ...streamRecord } = await createPayableStream({
       pkh,
-      // model: postModel,
-      model: pushChannelModel as Model,
+      model: postModel,
       stream: {
-        channel: "test",
-        ipfshash: "bafkreib76wz6wewtkfmp5rhm3ep6tf4xjixvzzyh64nbyge5yhjno24yl4",
-        // appVersion,
-        // text: "metaverse",
-        // images: [
-        //   "https://bafkreidhjbco3nh4uc7wwt5c7auirotd76ch6hlzpps7bwdvgckflp7zmi.ipfs.w3s.link/",
-        // ],
-        // videos: [],
-        // createdAt: date,
-        // updatedAt: date,
+        appVersion,
+        text: "metaverse",
+        images: [
+          "https://bafkreidhjbco3nh4uc7wwt5c7auirotd76ch6hlzpps7bwdvgckflp7zmi.ipfs.w3s.link/",
+        ],
+        videos: [],
+        createdAt: date,
+        updatedAt: date,
       },
       lensNickName: "luketheskywalker1", //Only supports lower case characters, numbers, must be minimum of 5 length and maximum of 26 length
       currency: Currency.WMATIC,
       amount: 0.0001,
       collectLimit: 1000,
       encrypted: {
-        channel: false,
-        ipfshash: false,
-        // text: true,
-        // images: true,
-        // videos: false,
+        text: true,
+        images: true,
+        videos: false,
       },
     });
 
@@ -253,21 +240,18 @@ function App() {
       return;
     }
     const { streamId, ...streamRecord } = await updateStream({
-      model: pushChannelModel as Model,
-      // model: postModel,
+      model: postModel,
       streamId: currentStreamId,
       stream: {
-        channel: "test2",
-        ipfshash: "bafkreib76wz6wewtkfmp5rhm3ep6tf4xjixvzzyh64nbyge5yhjno24yl5",
-        // text: "update my post -- " + new Date().toISOString(),
-        // images: [
-        //   "https://bafkreidhjbco3nh4uc7wwt5c7auirotd76ch6hlzpps7bwdvgckflp7zmi.ipfs.w3s.link",
-        // ],
+        text: "update my post -- " + new Date().toISOString(),
+        images: [
+          "https://bafkreidhjbco3nh4uc7wwt5c7auirotd76ch6hlzpps7bwdvgckflp7zmi.ipfs.w3s.link",
+        ],
       },
       encrypted: {
-        channel: false,
-        ipfshash: false,
-        // text: true, images: true, videos: false
+        text: true,
+        images: true,
+        videos: false,
       },
     });
 
@@ -280,8 +264,7 @@ function App() {
     }
     const { streamId, ...streamRecord } = await monetizeStream({
       pkh,
-      modelId: (pushChannelModel as Model).stream_id,
-      // modelId: postModel.stream_id,
+      modelId: postModel.stream_id,
       streamId: currentStreamId,
       lensNickName: "jackieth", //Only supports lower case characters, numbers, must be minimum of 5 length and maximum of 26 length
       currency: Currency.WMATIC,
@@ -315,19 +298,21 @@ function App() {
     if (!address) {
       throw new Error("address undefined");
     }
-    const spams = await pushNotificationClientRef.current?.getUserSpamNotifications(
-      getICAPAddress(address)
-    );
+    const spams =
+      await pushNotificationClientRef.current?.getUserSpamNotifications(
+        getICAPAddress(address)
+      );
     console.log("[getUserSpamNotifications]notifications:", spams);
   };
 
   const getNotificationsByChannel = async () => {
-    if (!address) {
-      throw new Error("address undefined");
-    }
+    const channel = getICAPAddress(
+      "0xd10d5b408A290a5FD0C2B15074995e899E944444"
+    );
+
     const notifications =
       await pushNotificationClientRef.current?.getNotificationsByChannel(
-        getICAPAddress(address),
+        channel,
         1,
         100
       );
@@ -335,9 +320,12 @@ function App() {
   };
 
   const subscribe = async () => {
-    const subscribeChannel = "eip155:5:0x6ed14ee482d3C4764C533f56B90360b767d21D5E";
+    const subscribeChannel =
+      "eip155:5:0xd10d5b408A290a5FD0C2B15074995e899E944444";
     try {
-      await pushNotificationClientRef.current?.subscribeChannel(subscribeChannel);
+      await pushNotificationClientRef.current?.subscribeChannel(
+        subscribeChannel
+      );
       console.log("[subscribe]done");
     } catch (error) {
       console.error(error);
@@ -345,9 +333,12 @@ function App() {
   };
 
   const unsubscribe = async () => {
-    const subscribeChannel = "eip155:5:0x6ed14ee482d3C4764C533f56B90360b767d21D5E";
+    const subscribeChannel =
+      "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
     try {
-      await pushNotificationClientRef.current?.unsubscribeChannel(subscribeChannel);
+      await pushNotificationClientRef.current?.unsubscribeChannel(
+        subscribeChannel
+      );
       console.log("[unsubscribe]done");
     } catch (error) {
       console.error(error);
@@ -355,9 +346,9 @@ function App() {
   };
 
   const sendNotification = async () => {
-    const sendChannel = "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
+    const sendChannel = "eip155:5:0xd10d5b408A290a5FD0C2B15074995e899E944444";
     const title = "Hello Title";
-    const body = "Tom long time no see."
+    const body = "Tom long time no see.";
     const res = await pushNotificationClientRef.current?.sendNotification(
       sendChannel,
       title,
@@ -368,9 +359,8 @@ function App() {
 
   const getChannelDetail = async () => {
     const detailChannel = "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
-    const channelData = await pushNotificationClientRef.current?.getChannelDetail(
-      detailChannel
-    );
+    const channelData =
+      await pushNotificationClientRef.current?.getChannelDetail(detailChannel);
     console.log("[getChannelDetail]channelData:", channelData);
   };
 
@@ -378,21 +368,23 @@ function App() {
     const queryChannel = "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
     const page = 1;
     const limit = 10;
-    const subscribers = await pushNotificationClientRef.current?.getSubscriberOfChannel(
-      queryChannel,
-      page,
-      limit
-    );
+    const subscribers =
+      await pushNotificationClientRef.current?.getSubscriberOfChannel(
+        queryChannel,
+        page,
+        limit
+      );
     console.log("[getSubscriberOfChannel]subscribers:", subscribers);
   };
 
   const searchChannelByName = async () => {
     const searchName = "DataverseChannel";
-    const channelsData = await pushNotificationClientRef.current?.searchChannelByName(
-      searchName,
-      1,
-      10
-    );
+    const channelsData =
+      await pushNotificationClientRef.current?.searchChannelByName(
+        searchName,
+        1,
+        10
+      );
     console.log("[searchChannelByName]channelsData:", channelsData);
   };
 
@@ -405,7 +397,7 @@ function App() {
   const sendChatMessage = async () => {
     const msgCont = "chatMsg";
     const msgType = "Text";
-    const receiver = "0x6ed14ee482d3C4764C533f56B90360b767d21D5E";
+    const receiver = "0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
 
     const response = await pushChatClientRef.current?.sendChatMessage(
       receiver,
@@ -417,7 +409,7 @@ function App() {
   };
 
   const fetchHistoryChats = async () => {
-    const receiver = "0x6ed14ee482d3C4764C533f56B90360b767d21D5E";
+    const receiver = "0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
     const limit = 30;
 
     const response = await pushChatClientRef.current?.fetchHistoryChats(
@@ -434,10 +426,7 @@ function App() {
     const CREATE_TABLE_SQL =
       "CREATE TABLE test_table (id integer primary key, record text)";
     console.log(tablelandClientRef.current);
-    const res = await tablelandClientRef.current?.createTable(
-      address!,
-      CREATE_TABLE_SQL
-    );
+    const res = await tablelandClientRef.current?.createTable(CREATE_TABLE_SQL);
     setTableId(res?.tableId);
     setTableName(`${res?.tableName}_${res?.chainId}_${res?.tableId}`);
     console.log("CreateTable: response: ", res);
@@ -447,7 +436,6 @@ function App() {
     const MUTATE_TABLE_SQL = `INSERT INTO ${tableName} (id, record) values(1, 'hello man01')`;
 
     const res = await tablelandClientRef.current?.mutateTable(
-      address!,
       tableId!,
       MUTATE_TABLE_SQL
     );
@@ -458,7 +446,6 @@ function App() {
     const UPDATE_TABLE_SQL = `UPDATE ${tableName} SET record = 'hello man02' WHERE id = 1`;
 
     const res = await tablelandClientRef.current?.mutateTable(
-      address!,
       tableId!,
       UPDATE_TABLE_SQL
     );
@@ -474,6 +461,12 @@ function App() {
     } else {
       console.error("getTableNameById failed");
     }
+  };
+
+  const getTableList = async () => {
+    const tablelandClient = tablelandClientRef.current;
+    const tables = await tablelandClient?.getTableList();
+    console.log("tables: ", tables);
   };
 
   return (
@@ -529,8 +522,12 @@ function App() {
       <br />
       <h2>Push Notification</h2>
       <button onClick={getUserSubscriptions}>getUserSubscriptions</button>
-      <button onClick={getUserSpamNotifications}>getUserSpamNotifications</button>
-      <button onClick={getNotificationsByChannel}>getNotificationsByChannel</button>
+      <button onClick={getUserSpamNotifications}>
+        getUserSpamNotifications
+      </button>
+      <button onClick={getNotificationsByChannel}>
+        getNotificationsByChannel
+      </button>
       <button onClick={subscribe}>subscribe</button>
       <button onClick={unsubscribe}>unsubscribe</button>
       <button onClick={sendNotification}>sendNotification</button>
@@ -548,6 +545,7 @@ function App() {
       <button onClick={insertTable}>insertTable</button>
       <button onClick={updateTable}>updateTable</button>
       <button onClick={getTableByTableId}>getTableByTableId</button>
+      <button onClick={getTableList}>getTableList</button>
       <br />
       <h2>Livepeer</h2>
       {livepeerClientRef.current?.reactClient && (

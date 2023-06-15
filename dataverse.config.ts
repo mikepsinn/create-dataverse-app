@@ -1,6 +1,6 @@
 export const config = {
-  slug: "push_livepeer_test001", // app id, need to match this regular: `^[a-zA-Z][a-zA-Z0-9_]*$`
-  name: "push_livepeer_test001", // app name should NOT contain "-"
+  slug: "toolkits_test001", // app id, need to match this regular: `^[a-zA-Z][a-zA-Z0-9_]*$`
+  name: "toolkits_test001", // app name should NOT contain "-"
   logo: "http://no-logo.com",
   website: "", // you can use localhost:(port) for testing
   defaultFolderName: "Untitled",
@@ -16,27 +16,27 @@ export const config = {
       schemaName: "profile.graphql",
     },
     {
-      isPublicDomain: false, // default
+      isPublicDomain: false,
       schemaName: "channel.graphql",
       encryptable: [],
     },
     {
-      isPublicDomain: false, // default
+      isPublicDomain: false,
       schemaName: "chatmessage.graphql",
       encryptable: ["link", "cid"],
     },
     {
-      isPublicDomain: false, // default
+      isPublicDomain: false,
       schemaName: "notification.graphql",
       encryptable: [],
     },
     {
-      isPublicDomain: false, // default
+      isPublicDomain: false,
       schemaName: "chatgpgkey.graphql",
       encryptable: ["pgp_key"],
     },
     {
-      isPublicDomain: false, // default
+      isPublicDomain: false,
       schemaName: "livepeerasset.graphql",
       encryptable: [
         "asset_id",
@@ -45,6 +45,11 @@ export const config = {
         "playback_url",
         "download_url",
       ],
+    },
+    {
+      isPublicDomain: false,
+      schemaName: "table.graphql",
+      encryptable: [],
     },
   ],
   ceramicUrl: null, // leave null to use dataverse test Ceramic node. Set to {Your Ceramic node Url} for mainnet, should start with "https://".
