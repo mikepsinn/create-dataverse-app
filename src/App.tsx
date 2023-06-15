@@ -414,15 +414,18 @@ function App() {
         </div>
       )}
       <br />
+      <h2>Push</h2>
       <button onClick={createPushChatUser}>createPushChatUser</button>
       <button onClick={sendChatMessage}>sendChatMessage</button>
       <button onClick={fetchHistoryChats}>fetchHistoryChats</button>
       <br />
+      <h2>Tableland</h2>
       <button onClick={createTable}>createTable</button>
       <button onClick={insertTable}>insertTable</button>
       <button onClick={updateTable}>updateTable</button>
       <button onClick={getTableByTableId}>getTableByTableId</button>
       <br />
+      <h2>Livepeer</h2>
       {livepeerClientRef.current?.reactClient && (
         <>
           <LivepeerConfig client={livepeerClientRef.current.reactClient!}>
