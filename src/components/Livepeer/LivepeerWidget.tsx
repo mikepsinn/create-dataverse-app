@@ -40,7 +40,7 @@ export const LivepeerWidget = ({ livepeerClient, asset, setAsset }: IProps) => {
       if ((asset[0] as any).status.errorMessage) {
         throw new Error((asset[0] as any).status.errorMessage);
       }
-      const res = await livepeerClient.createAssetMetaStream(asset[0]);
+      const res = await livepeerClient.persistAssetMeta(asset[0]);
       console.log("livepeerClient createAssetMetaStream res: ", res);
       setAsset(asset[0]);
       console.log("File uploaded successfully");
@@ -61,7 +61,7 @@ export const LivepeerWidget = ({ livepeerClient, asset, setAsset }: IProps) => {
       if (!asset) {
         throw new Error("Asset undefined");
       }
-      const res = await livepeerClient.updateAssetMetaStream(asset);
+      const res = await livepeerClient.persistAssetMeta(asset);
       console.log("livepeerClient updateAssetMetaStream res: ", res);
       setAsset(asset);
       console.log("Asset saved to Ipfs successfully");
@@ -81,8 +81,8 @@ export const LivepeerWidget = ({ livepeerClient, asset, setAsset }: IProps) => {
     }
   };
 
-  const getAssetList = async () => {
-    const res = await livepeerClient.getAssetList();
+  const getAssetMetaList = async () => {
+    const res = await livepeerClient.getAssetMetaList();
     console.log("res:", res);
   };
 
@@ -100,7 +100,7 @@ export const LivepeerWidget = ({ livepeerClient, asset, setAsset }: IProps) => {
       <button onClick={uploadFileToIpfs} disabled={loading}>
         UploadFileToIpfs
       </button>
-      <button onClick={getAssetList}>getAssetList</button>
+      <button onClick={getAssetMetaList}>getAssetMetaList</button>
     </div>
   );
 };

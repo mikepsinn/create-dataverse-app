@@ -305,23 +305,19 @@ function App() {
     console.log("[getUserSpamNotifications]notifications:", spams);
   };
 
-  const getNotificationsByChannel = async () => {
-    const channel = getICAPAddress(
-      "0xd10d5b408A290a5FD0C2B15074995e899E944444"
-    );
-
+  const getNotificationsByUser = async () => {
     const notifications =
-      await pushNotificationClientRef.current?.getNotificationsByChannel(
-        channel,
+      await pushNotificationClientRef.current?.getNotificationsByUser(
+        address!,
         1,
         100
       );
-    console.log("[getNotificationsByChannel]notifications:", notifications);
+    console.log("[getNotificationsByUser]notifications:", notifications);
   };
 
   const subscribe = async () => {
     const subscribeChannel =
-      "eip155:5:0xd10d5b408A290a5FD0C2B15074995e899E944444";
+      "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
     try {
       await pushNotificationClientRef.current?.subscribeChannel(
         subscribeChannel
@@ -346,14 +342,20 @@ function App() {
   };
 
   const sendNotification = async () => {
-    const sendChannel = "eip155:5:0xd10d5b408A290a5FD0C2B15074995e899E944444";
+    const sendChannel = "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
     const title = "Hello Title";
     const body = "Tom long time no see.";
+    const img =
+      "https://bafkreicf7ynxjjjumhrntswhtqbnkjvi24zqw3ubuvbeie3nzrylyyovye.ipfs.dweb.link";
+    const cta = "";
+
     try {
       const res = await pushNotificationClientRef.current?.sendNotification(
         sendChannel,
         title,
-        body
+        body,
+        img,
+        cta
       );
       console.log("[sendNotification]res:", res);
     } catch (error: any) {
@@ -396,6 +398,12 @@ function App() {
     console.log("[searchChannelByName]channelsData:", channelsData);
   };
 
+  const getNotificationList = async () => {
+    const noticeList =
+      await pushNotificationClientRef.current?.getNotificationList();
+    console.log("getNotificationList: ", noticeList);
+  };
+
   // Push Chat
   const createPushChatUser = async () => {
     const user = await pushChatClientRef.current?.createPushChatUser();
@@ -413,7 +421,7 @@ function App() {
       msgType
     );
 
-    console.log("SendMsg: response: ", response);
+    console.log("sendChatMessage: response: ", response);
   };
 
   const fetchHistoryChats = async () => {
@@ -426,6 +434,11 @@ function App() {
     );
 
     console.log("FetchHistoryChats: response: ", response);
+  };
+
+  const getChatMessageList = async () => {
+    const msgList = await pushChatClientRef.current?.getMsgList();
+    console.log("ChatMessageList: response: ", msgList);
   };
 
   // Tableland
@@ -529,34 +542,34 @@ function App() {
         </div>
       )}
       <br />
-      <h2>Push Channel</h2>
+      <h2 className="label">Push Channel</h2>
       <button onClick={getUserSubscriptions}>getUserSubscriptions</button>
       <button onClick={getUserSpamNotifications}>
         getUserSpamNotifications
       </button>
-      <button onClick={getNotificationsByChannel}>
-        getNotificationsByChannel
-      </button>
+      <button onClick={getNotificationsByUser}>getNotificationsByUser</button>
       <button onClick={subscribe}>subscribe</button>
       <button onClick={unsubscribe}>unsubscribe</button>
       <button onClick={sendNotification}>sendNotification</button>
       <button onClick={getChannelDetail}>getChannelDetail</button>
       <button onClick={getSubscriberOfChannel}>getSubscriberOfChannel</button>
       <button onClick={searchChannelByName}>searchChannelByName</button>
+      <button onClick={getNotificationList}>getNotificationList</button>
       <br />
-      <h2>Push Chat</h2>
+      <h2 className="label">Push Chat</h2>
       <button onClick={createPushChatUser}>createPushChatUser</button>
       <button onClick={sendChatMessage}>sendChatMessage</button>
       <button onClick={fetchHistoryChats}>fetchHistoryChats</button>
+      <button onClick={getChatMessageList}>getChatMessageList</button>
       <br />
-      <h2>Tableland</h2>
+      <h2 className="label">Tableland</h2>
       <button onClick={createTable}>createTable</button>
       <button onClick={insertTable}>insertTable</button>
       <button onClick={updateTable}>updateTable</button>
       <button onClick={getTableByTableId}>getTableByTableId</button>
       <button onClick={getTableList}>getTableList</button>
       <br />
-      <h2>Livepeer</h2>
+      <h2 className="label">Livepeer</h2>
       {livepeerClientRef.current?.reactClient && (
         <>
           <LivepeerConfig client={livepeerClientRef.current.reactClient!}>

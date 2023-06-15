@@ -74,6 +74,10 @@ button:focus-visible {
   color: #000;
 }
 
-.playbackInput{
+.playbackInput {
   background: #fff;
+}
+
+.label {
+  color: #000;
 }
