@@ -119,7 +119,7 @@ function App() {
 
       if (livepeerModel) {
         const livepeerClient = new LivepeerClient({
-          apiKey: "69ecb5ef-9f70-41f3-8a65-1bac0de4eff7",
+          apiKey: "6bbdad77-25ed-42b9-9b6d-b419766410f7",
           runtimeConnector,
           modelId: livepeerModel.stream_id,
           appName: name,
@@ -483,6 +483,11 @@ function App() {
     }
   };
 
+  const getAssetList = async () => {
+    const res = await livepeerClientRef.current?.getAssetList();
+    console.log("res:", res);
+  }
+
   return (
     <div className="App">
       <button onClick={connect}>connect</button>
@@ -574,6 +579,7 @@ function App() {
           </LivepeerConfig>
         </>
       )}
+      <button onClick={getAssetList}>getAssetList</button>
     </div>
   );
 }
