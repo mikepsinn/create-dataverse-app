@@ -21,7 +21,7 @@ import TablelandClient, {
   ModelName as TablelandModelName,
 } from "@dataverse/tableland-client-toolkit";
 import { Network } from "@dataverse/tableland-client-toolkit";
-import { AssetsCreator, LivepeerPlayer } from "./components/Livepeer";
+import { LivepeerWidget, LivepeerPlayer } from "./components/Livepeer";
 
 function App() {
   const { appVersion, postModel, output, runtimeConnector } =
@@ -117,7 +117,7 @@ function App() {
 
       if (livepeerModel) {
         const livepeerClient = new LivepeerClient({
-          apiKey: "69ecb5ef-9f70-41f3-8a65-1bac0de4eff7",
+          apiKey: "6bbdad77-25ed-42b9-9b6d-b419766410f7",
           runtimeConnector,
           modelId: livepeerModel.stream_id,
           appName: name,
@@ -349,12 +349,20 @@ function App() {
     const sendChannel = "eip155:5:0xd10d5b408A290a5FD0C2B15074995e899E944444";
     const title = "Hello Title";
     const body = "Tom long time no see.";
-    const res = await pushNotificationClientRef.current?.sendNotification(
-      sendChannel,
-      title,
-      body
-    );
-    console.log("[sendNotification]res:", res);
+    try {
+      const res = await pushNotificationClientRef.current?.sendNotification(
+        sendChannel,
+        title,
+        body
+      );
+      console.log("[sendNotification]res:", res);
+    } catch (error: any) {
+      if (error.message === "this account does not have channel") {
+        console.warn(
+          "This Account doesn't have channel, please go to https://staging.push.org/ to create channel."
+        );
+      }
+    }
   };
 
   const getChannelDetail = async () => {
@@ -395,7 +403,7 @@ function App() {
   };
 
   const sendChatMessage = async () => {
-    const msgCont = "chatMsg";
+    const msgCont = "Someting content";
     const msgType = "Text";
     const receiver = "0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
 
@@ -420,6 +428,7 @@ function App() {
     console.log("FetchHistoryChats: response: ", response);
   };
 
+  // Tableland
   const createTable = async () => {
     await switchNetwork(80001);
 
@@ -520,7 +529,7 @@ function App() {
         </div>
       )}
       <br />
-      <h2>Push Notification</h2>
+      <h2>Push Channel</h2>
       <button onClick={getUserSubscriptions}>getUserSubscriptions</button>
       <button onClick={getUserSpamNotifications}>
         getUserSpamNotifications
@@ -551,7 +560,7 @@ function App() {
       {livepeerClientRef.current?.reactClient && (
         <>
           <LivepeerConfig client={livepeerClientRef.current.reactClient!}>
-            <AssetsCreator
+            <LivepeerWidget
               livepeerClient={livepeerClientRef.current}
               asset={asset}
               setAsset={setAsset}
