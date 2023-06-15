@@ -1,2 +1,2 @@
 export * from "./LivepeerPlayer"
-export * from "./AssetsCreator"
+export * from "./LivepeerWidget"

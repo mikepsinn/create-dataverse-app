@@ -7,7 +7,7 @@ interface IProps {
   asset: any;
   setAsset: Function;
 }
-export const AssetsCreator = ({ livepeerClient, asset, setAsset }: IProps) => {
+export const LivepeerWidget = ({ livepeerClient, asset, setAsset }: IProps) => {
   const [loading, setLoading] = useState(false);
   const [fileInput, setFileInput] = useState<any>(null);
   const { mutateAsync: createAssetAsync } = useCreateAsset(
@@ -81,6 +81,11 @@ export const AssetsCreator = ({ livepeerClient, asset, setAsset }: IProps) => {
     }
   };
 
+  const getAssetList = async () => {
+    const res = await livepeerClient.getAssetList();
+    console.log("res:", res);
+  };
+
   return (
     <div>
       <input
@@ -95,6 +100,7 @@ export const AssetsCreator = ({ livepeerClient, asset, setAsset }: IProps) => {
       <button onClick={uploadFileToIpfs} disabled={loading}>
         UploadFileToIpfs
       </button>
+      <button onClick={getAssetList}>getAssetList</button>
     </div>
   );
 };
