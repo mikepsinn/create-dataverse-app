@@ -476,20 +476,6 @@ function App() {
     }
   };
 
-  const retrieveAssetById = async () => {
-    const res = await livepeerClientRef.current?.retrieveAssetById(asset.id);
-    console.log("retrieveAssetById res:", res);
-  };
-
-  const retrieveAssets = async () => {
-    const res = await livepeerClientRef.current?.retrieveAssets();
-    console.log("retrieveAssets res:", res);
-  };
-
-  const deleteAssetById = async () => {
-    await livepeerClientRef.current?.deleteAssetById(asset.id);
-  };
-
   return (
     <div className="App">
       <button onClick={connect}>connect</button>
@@ -541,6 +527,7 @@ function App() {
         </div>
       )}
       <br />
+      <h2>Push Notification</h2>
       <button onClick={getUserSubscriptions}>getUserSubscriptions</button>
       <button onClick={getUserSpamNotifications}>getUserSpamNotifications</button>
       <button onClick={getNotificationsByChannel}>getNotificationsByChannel</button>
@@ -551,15 +538,18 @@ function App() {
       <button onClick={getSubscriberOfChannel}>getSubscriberOfChannel</button>
       <button onClick={searchChannelByName}>searchChannelByName</button>
       <br />
+      <h2>Push Chat</h2>
       <button onClick={createPushChatUser}>createPushChatUser</button>
       <button onClick={sendChatMessage}>sendChatMessage</button>
       <button onClick={fetchHistoryChats}>fetchHistoryChats</button>
       <br />
+      <h2>Tableland</h2>
       <button onClick={createTable}>createTable</button>
       <button onClick={insertTable}>insertTable</button>
       <button onClick={updateTable}>updateTable</button>
       <button onClick={getTableByTableId}>getTableByTableId</button>
       <br />
+      <h2>Livepeer</h2>
       {livepeerClientRef.current?.reactClient && (
         <>
           <LivepeerConfig client={livepeerClientRef.current.reactClient!}>
@@ -571,12 +561,9 @@ function App() {
             {asset?.id && (
               <LivepeerPlayer
                 reactClient={livepeerClientRef.current.reactClient}
-                playbackId={asset.id}
+                playbackId={asset.playbackId}
               />
             )}
-            <button onClick={retrieveAssetById}>retrieveAssetById</button>
-            <button onClick={retrieveAssets}>retrieveAssets</button>
-            <button onClick={deleteAssetById}>deleteAssetById</button>
           </LivepeerConfig>
         </>
       )}

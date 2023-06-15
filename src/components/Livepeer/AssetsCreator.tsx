@@ -37,6 +37,9 @@ export const AssetsCreator = ({ livepeerClient, asset, setAsset }: IProps) => {
       if (!asset) {
         throw new Error("Asset undefined");
       }
+      if ((asset[0] as any).status.errorMessage) {
+        throw new Error((asset[0] as any).status.errorMessage);
+      }
       const res = await livepeerClient.createAssetMetaStream(asset[0]);
       console.log("livepeerClient createAssetMetaStream res: ", res);
       setAsset(asset[0]);
@@ -58,7 +61,7 @@ export const AssetsCreator = ({ livepeerClient, asset, setAsset }: IProps) => {
       if (!asset) {
         throw new Error("Asset undefined");
       }
-      const res = await livepeerClient.updateAssetMetaStream((asset as any)[0]);
+      const res = await livepeerClient.updateAssetMetaStream(asset);
       console.log("livepeerClient updateAssetMetaStream res: ", res);
       setAsset(asset);
       console.log("Asset saved to Ipfs successfully");
@@ -77,10 +80,15 @@ export const AssetsCreator = ({ livepeerClient, asset, setAsset }: IProps) => {
       setFileInput(null);
     }
   };
-  
+
   return (
     <div>
-      <input type="file" onChange={handleFileChange} className="upload" />
+      <input
+        type="file"
+        onChange={handleFileChange}
+        className="upload"
+        accept="video/*"
+      />
       <button onClick={handleFileUpload} disabled={loading}>
         UploadToLivepeer
       </button>
