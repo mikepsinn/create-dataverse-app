@@ -18,6 +18,7 @@ import LivepeerClient, {
 
 import TablelandClient from "@dataverse/tableland-client-toolkit";
 import { Network } from "@dataverse/tableland-client-toolkit";
+import { AssetsCreator, LivepeerPlayer } from "./components/Livepeer";
 
 function App() {
   const { appVersion, postModel, output, runtimeConnector } =
@@ -36,6 +37,7 @@ function App() {
   const tablelandClientRef = useRef<TablelandClient>();
   const [tableId, setTableId] = useState<string>();
   const [tableName, setTableName] = useState<string>();
+  const [asset, setAsset] = useState<any>(null);
 
   const { address, connectWallet, switchNetwork } = useWallet();
 
@@ -61,7 +63,7 @@ function App() {
       );
 
       const livepeerModel = output.createDapp.streamIDs.find(
-        (item) => item.name === `${slug}_livepeer`
+        (item) => item.name === `${slug}_livepeerasset`
       );
 
       const tablelandModel = output.createDapp.streamIDs.find(
@@ -362,9 +364,7 @@ function App() {
   };
 
   const retrieveAssetById = async () => {
-    const res = await livepeerClientRef.current?.retrieveAssetById(
-      "be869964-4ec4-4652-bb5b-22a09112d717"
-    );
+    const res = await livepeerClientRef.current?.retrieveAssetById(asset.id);
     console.log("retrieveAssetById res:", res);
   };
 
@@ -374,88 +374,7 @@ function App() {
   };
 
   const deleteAssetById = async () => {
-    await livepeerClientRef.current?.deleteAssetById(
-      "5561fd95-cc5b-47a9-bb79-d6d460f79883"
-    );
-  };
-
-  const createAssetMetaStream = async () => {
-    const asset = {
-      id: "fd926a0a-9a1d-481c-9320-3f660f6c583c",
-      hash: [
-        {
-          hash: "59b8487da4236b3d42890fedab86ac64",
-          algorithm: "md5",
-        },
-        {
-          hash: "ce4bfdc8fda0c1a3393dbb6850de2bee1f44e9be6839a377499009dde493a1f8",
-          algorithm: "sha256",
-        },
-      ],
-      name: "SampleVideo_360x240_1mb.mp4",
-      size: 1053651,
-      source: {
-        type: "directUpload",
-      },
-      status: {
-        phase: "ready",
-        updatedAt: 1686288965902,
-      },
-      userId: "465c2ff6-de57-43e1-a2c8-2ef60413ea95",
-      createdAt: 1686288914975,
-      videoSpec: {
-        format: "mp4",
-        duration: 13.696,
-      },
-      playbackId: "fd92jdwxbill3hye",
-      playbackUrl: "https://lp-playback.com/hls/fd92jdwxbill3hye/index.m3u8",
-      downloadUrl: "https://lp-playback.com/hls/fd92jdwxbill3hye/video",
-    };
-
-    await livepeerClientRef.current?.createAssetMetaStream(asset);
-    console.log("AssetMetaStream created.");
-  };
-
-  const removeAssetMetaStreamByAssetId = async () => {
-    const assetId = "6f8e2e9c-7670-4777-ac08-d558045ff44f";
-    await livepeerClientRef.current?.removeAssetMetaStreamByAssetId(assetId);
-    console.log("AssetMetaStream removed.");
-  };
-
-  const updateAssetMetaStream = async () => {
-    const asset = {
-      id: "dd3565d4-24eb-46bf-8116-99b7991b791d",
-      hash: [
-        {
-          hash: "59b8487da4236b3d42890fedab86ac64",
-          algorithm: "md5",
-        },
-        {
-          hash: "ce4bfdc8fda0c1a3393dbb6850de2bee1f44e9be6839a377499009dde493a1f8",
-          algorithm: "sha256",
-        },
-      ],
-      name: "SampleVideo_360x240_1mb.mp4",
-      size: 1053651,
-      source: {
-        type: "directUpload2",
-      },
-      status: {
-        phase: "ready",
-        updatedAt: 1686309267324,
-      },
-      userId: "465c2ff6-de57-43e1-a2c8-2ef60413ea95",
-      createdAt: 1686309229112,
-      videoSpec: {
-        format: "mp4",
-        duration: 13.696,
-      },
-      playbackId: "dd35xm3cf3s1h5kk",
-      playbackUrl: "https://lp-playback.com/hls/dd35xm3cf3s1h5kk/index.m3u8",
-      downloadUrl: "https://lp-playback.com/hls/dd35xm3cf3s1h5kk/video",
-    };
-    await livepeerClientRef.current?.updateAssetMetaStream(asset);
-    console.log("AssetMetaStream updated.");
+    await livepeerClientRef.current?.deleteAssetById(asset.id);
   };
 
   return (
@@ -518,18 +437,25 @@ function App() {
       <button onClick={updateTable}>updateTable</button>
       <button onClick={getTableByTableId}>getTableByTableId</button>
       <br />
-      {/* <LivepeerPlayer reactClient={livePeerClient.reactClient} /> */}
       {livepeerClientRef.current?.reactClient && (
-        <LivepeerConfig client={livepeerClientRef.current?.reactClient!}>
-          <button onClick={retrieveAssetById}>retrieveAssetById</button>
-          <button onClick={retrieveAssets}>retrieveAssets</button>
-          <button onClick={deleteAssetById}>deleteAssetById</button>
-          <button onClick={createAssetMetaStream}>createAssetMetaStream</button>
-          <button onClick={removeAssetMetaStreamByAssetId}>
-            removeAssetMetaStreamByAssetId
-          </button>
-          <button onClick={updateAssetMetaStream}>updateAssetMetaStream</button>
-        </LivepeerConfig>
+        <>
+          <LivepeerConfig client={livepeerClientRef.current.reactClient!}>
+            <AssetsCreator
+              livepeerClient={livepeerClientRef.current}
+              asset={asset}
+              setAsset={setAsset}
+            />
+            {asset?.id && (
+              <LivepeerPlayer
+                reactClient={livepeerClientRef.current.reactClient}
+                playbackId={asset.id}
+              />
+            )}
+            <button onClick={retrieveAssetById}>retrieveAssetById</button>
+            <button onClick={retrieveAssets}>retrieveAssets</button>
+            <button onClick={deleteAssetById}>deleteAssetById</button>
+          </LivepeerConfig>
+        </>
       )}
     </div>
   );

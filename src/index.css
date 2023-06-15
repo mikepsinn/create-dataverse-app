@@ -68,3 +68,12 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.upload {
+  width: 180px;
+  color: #000;
+}
+
+.playbackInput{
+  background: #fff;
+}

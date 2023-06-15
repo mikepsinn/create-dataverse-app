@@ -1,1 +1,80 @@
-{"createDapp":{"id":"1c01fd81-407b-4c88-9814-ae36b36893dd","streamIDs":[{"name":"push_test004_indexFiles","stream_id":"kjzl6hvfrbw6caikam6c5zj2l29jko6bgzh9vp370204t31rmudbuzz5xoyayud","isPublicDomain":false,"encryptable":null},{"name":"push_test004_pushchannel","stream_id":"kjzl6hvfrbw6cb9uv8onwqz88jwgasxxdq8acb5iuezg83ly90jmvkjkl2iotiw","isPublicDomain":false,"encryptable":[]},{"name":"push_test004_post","stream_id":"kjzl6hvfrbw6c85yzb35csla2stk8r6osy51iglvd25ybc4gv4z5ojeuu6lrlw3","isPublicDomain":false,"encryptable":["text","images","videos"]},{"name":"push_test004_contentFolders","stream_id":"kjzl6hvfrbw6c6pm3usxog3rcaalv9djh5nuqvxfa8c2x3lt3nohxnq6u4u158c","isPublicDomain":false,"encryptable":null},{"name":"push_test004_pushnotification","stream_id":"kjzl6hvfrbw6c686ghwznib2j5qayakdj2bcp4y6jhb267vqpzgyeuizl7zeolz","isPublicDomain":false,"encryptable":[]},{"name":"push_test004_indexFolders","stream_id":"kjzl6hvfrbw6ca30cnrexcjqdg93hsvldmxo8bmouahxecte0rmhmjyvddrcht9","isPublicDomain":false,"encryptable":null},{"name":"push_test004_pushchatgpgkey","stream_id":"kjzl6hvfrbw6c7bpva53a3wjts69l7j45pk45cdfwfk52mz3fjg30bvrm26ubg0","isPublicDomain":false,"encryptable":["pgp_key"]},{"name":"push_test004_profile","stream_id":"kjzl6hvfrbw6c79h30ap7fopgfdxio96uiqlf5w4wrpd2ysxz4wb9t8da5e0g9p","isPublicDomain":true,"encryptable":null},{"name":"push_test004_pushchatmessage","stream_id":"kjzl6hvfrbw6c9pvgightq6raz1ivotipv6ooy59vxvu4allba7fsf7jkk75onj","isPublicDomain":false,"encryptable":["link","cid"]}],"website":"","name":"push_test004","slug":"push_test004","logo":"http://no-logo.com","description":"","defaultFolderName":"Untitled","ceramic":"https://local1.dataverseceramicdaemon.com"}}
+{
+  "createDapp": {
+    "id": "ee4784c0-4a76-4dc6-ae7a-dc051cf29128",
+    "streamIDs": [
+      {
+        "name": "push_livepeer_test001_pushnotification",
+        "stream_id": "kjzl6hvfrbw6c6knuiardvq5bc5z4y7xn6ji5wzsjglp2rs3m99zxg7r9oaytud",
+        "isPublicDomain": false,
+        "encryptable": []
+      },
+      {
+        "name": "push_livepeer_test001_contentFolders",
+        "stream_id": "kjzl6hvfrbw6c7wn0e494c4xbkc2ekk5dynmihj7hdi99h70ywewfuy6vjg96qc",
+        "isPublicDomain": false,
+        "encryptable": null
+      },
+      {
+        "name": "push_livepeer_test001_indexFolders",
+        "stream_id": "kjzl6hvfrbw6c7n49x54rv47p2mlnubxmtbsvdyqnbw1t107zc5koz5kkbr3z2n",
+        "isPublicDomain": false,
+        "encryptable": null
+      },
+      {
+        "name": "push_livepeer_test001_profile",
+        "stream_id": "kjzl6hvfrbw6c7ml1qdvio8vom5rdhm7omn8divzpje3gjk2hhmtoqpj7jkdhw5",
+        "isPublicDomain": true,
+        "encryptable": null
+      },
+      {
+        "name": "push_livepeer_test001_pushchatgpgkey",
+        "stream_id": "kjzl6hvfrbw6c9or8lz3gwrjm12oibbkd00d8upsbcvohd46iw0i7jdspcb2xok",
+        "isPublicDomain": false,
+        "encryptable": ["pgp_key"]
+      },
+      {
+        "name": "push_livepeer_test001_pushchannel",
+        "stream_id": "kjzl6hvfrbw6c7syps9nszpduj6miawtcejdhfxotg3t618ftr71yxf241ds29n",
+        "isPublicDomain": false,
+        "encryptable": []
+      },
+      {
+        "name": "push_livepeer_test001_post",
+        "stream_id": "kjzl6hvfrbw6c9bs8gjmgilqwspvpw0e8bj04yasiqhotvoolr4jkokvx8u07ze",
+        "isPublicDomain": false,
+        "encryptable": ["text", "images", "videos"]
+      },
+      {
+        "name": "push_livepeer_test001_livepeerasset",
+        "stream_id": "kjzl6hvfrbw6c6hgkg0356try0tdugvzel6m3bnxr6ac0el5rfhkpxbzl7a4cvt",
+        "isPublicDomain": false,
+        "encryptable": [
+          "asset_id",
+          "storage",
+          "playback_id",
+          "playback_url",
+          "download_url"
+        ]
+      },
+      {
+        "name": "push_livepeer_test001_indexFiles",
+        "stream_id": "kjzl6hvfrbw6c9j7b70upob31s8kcaqsq0n8jdh2mimef98039fv5rz697ililv",
+        "isPublicDomain": false,
+        "encryptable": null
+      },
+      {
+        "name": "push_livepeer_test001_pushchatmessage",
+        "stream_id": "kjzl6hvfrbw6c7j99aaso118g1ku7zty06sru4a3kkr010x9gs41pzk4uvh79ts",
+        "isPublicDomain": false,
+        "encryptable": ["link", "cid"]
+      }
+    ],
+    "website": "",
+    "name": "push_livepeer_test001",
+    "slug": "push_livepeer_test001",
+    "logo": "http://no-logo.com",
+    "description": "",
+    "defaultFolderName": "Untitled",
+    "ceramic": "https://local1.dataverseceramicdaemon.com"
+  }
+}

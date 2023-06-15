@@ -1,6 +1,6 @@
 export const config = {
-  slug: "push_test004", // app id, need to match this regular: `^[a-zA-Z][a-zA-Z0-9_]*$`
-  name: "push_test004", // app name should NOT contain "-"
+  slug: "push_livepeer_test001", // app id, need to match this regular: `^[a-zA-Z][a-zA-Z0-9_]*$`
+  name: "push_livepeer_test001", // app name should NOT contain "-"
   logo: "http://no-logo.com",
   website: "", // you can use localhost:(port) for testing
   defaultFolderName: "Untitled",
@@ -34,6 +34,17 @@ export const config = {
       isPublicDomain: false, // default
       schemaName: "chatgpgkey.graphql",
       encryptable: ["pgp_key"],
+    },
+    {
+      isPublicDomain: false, // default
+      schemaName: "livepeerasset.graphql",
+      encryptable: [
+        "asset_id",
+        "storage",
+        "playback_id",
+        "playback_url",
+        "download_url",
+      ],
     },
   ],
   ceramicUrl: null, // leave null to use dataverse test Ceramic node. Set to {Your Ceramic node Url} for mainnet, should start with "https://".
