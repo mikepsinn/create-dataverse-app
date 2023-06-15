@@ -10,6 +10,7 @@ import {
   PushChatClient,
   ENV,
   ModelName,
+  getICAPAddress,
 } from "@dataverse/push-client-toolkit";
 
 import LivepeerClient, {
@@ -33,6 +34,7 @@ function App() {
   const [unlockedPost, setUnlockedPost] = useState<StreamRecord>();
   const [pushChannelModel, setPushChannelModel] = useState<Model>();
   const pushChatClientRef = useRef<PushChatClient>();
+  const pushNotificationClientRef = useRef<PushNotificationClient>();
   const livepeerClientRef = useRef<LivepeerClient>();
   const tablelandClientRef = useRef<TablelandClient>();
   const [tableId, setTableId] = useState<string>();
@@ -58,7 +60,7 @@ function App() {
         (item) => item.name === `${slug}_pushchatgpgkey`
       );
 
-      const pushnotificationModel = output.createDapp.streamIDs.find(
+      const pushNotificationModel = output.createDapp.streamIDs.find(
         (item) => item.name === `${slug}_pushnotification`
       );
 
@@ -74,7 +76,7 @@ function App() {
       //   [ModelName.MESSAGE]: pushChatMessageModel?.stream_id!,
       //   [ModelName.USER_PGP_KEY]: pushGPGKeyModel?.stream_id!,
       //   [ModelName.CHANNEL]: pushChannelModel?.stream_id!,
-      //   [ModelName.NOTIFICATION]: pushnotificationModel?.stream_id!,
+      //   [ModelName.NOTIFICATION]: pushNotificationModel?.stream_id!,
       // });
 
       if (pushChatMessageModel) {
@@ -84,12 +86,27 @@ function App() {
             [ModelName.MESSAGE]: pushChatMessageModel?.stream_id!,
             [ModelName.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
             [ModelName.CHANNEL]: pushChannelModel?.stream_id!,
-            [ModelName.NOTIFICATION]: pushnotificationModel?.stream_id!,
+            [ModelName.NOTIFICATION]: pushNotificationModel?.stream_id!,
           },
           appName: output.createDapp.name,
           env: ENV.STAGING,
         });
         pushChatClientRef.current = pushChatClient;
+      }
+
+      if (pushNotificationModel) {
+        const pushNotificationClient = new PushNotificationClient({
+          runtimeConnector,
+          modelIds: {
+            [ModelName.MESSAGE]: pushChatMessageModel?.stream_id!,
+            [ModelName.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
+            [ModelName.CHANNEL]: pushChannelModel?.stream_id!,
+            [ModelName.NOTIFICATION]: pushNotificationModel?.stream_id!,
+          },
+          appName: output.createDapp.name,
+          env: ENV.STAGING,
+        });
+        pushNotificationClientRef.current = pushNotificationClient;
       }
 
       // if (tablelandModel) {
@@ -284,6 +301,102 @@ function App() {
     setUnlockedPost(streamRecord as StreamRecord);
   };
 
+  // Push Notifications
+  const getUserSubscriptions = async () => {
+    if (!address) {
+      throw new Error("address undefined");
+    }
+    const subscriptions =
+      await pushNotificationClientRef.current?.getSubscriptionsByUser(address);
+    console.log("[getUserSubscriptions]subscriptions:", subscriptions);
+  };
+
+  const getUserSpamNotifications = async () => {
+    if (!address) {
+      throw new Error("address undefined");
+    }
+    const spams = await pushNotificationClientRef.current?.getUserSpamNotifications(
+      getICAPAddress(address)
+    );
+    console.log("[getUserSpamNotifications]notifications:", spams);
+  };
+
+  const getNotificationsByChannel = async () => {
+    if (!address) {
+      throw new Error("address undefined");
+    }
+    const notifications =
+      await pushNotificationClientRef.current?.getNotificationsByChannel(
+        getICAPAddress(address),
+        1,
+        100
+      );
+    console.log("[getNotificationsByChannel]notifications:", notifications);
+  };
+
+  const subscribe = async () => {
+    const subscribeChannel = "eip155:5:0x6ed14ee482d3C4764C533f56B90360b767d21D5E";
+    try {
+      await pushNotificationClientRef.current?.subscribeChannel(subscribeChannel);
+      console.log("[subscribe]done");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const unsubscribe = async () => {
+    const subscribeChannel = "eip155:5:0x6ed14ee482d3C4764C533f56B90360b767d21D5E";
+    try {
+      await pushNotificationClientRef.current?.unsubscribeChannel(subscribeChannel);
+      console.log("[unsubscribe]done");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const sendNotification = async () => {
+    const sendChannel = "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
+    const title = "Hello Title";
+    const body = "Tom long time no see."
+    const res = await pushNotificationClientRef.current?.sendNotification(
+      sendChannel,
+      title,
+      body
+    );
+    console.log("[sendNotification]res:", res);
+  };
+
+  const getChannelDetail = async () => {
+    const detailChannel = "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
+    const channelData = await pushNotificationClientRef.current?.getChannelDetail(
+      detailChannel
+    );
+    console.log("[getChannelDetail]channelData:", channelData);
+  };
+
+  const getSubscriberOfChannel = async () => {
+    const queryChannel = "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
+    const page = 1;
+    const limit = 10;
+    const subscribers = await pushNotificationClientRef.current?.getSubscriberOfChannel(
+      queryChannel,
+      page,
+      limit
+    );
+    console.log("[getSubscriberOfChannel]subscribers:", subscribers);
+  };
+
+  const searchChannelByName = async () => {
+    const searchName = "DataverseChannel";
+    const channelsData = await pushNotificationClientRef.current?.searchChannelByName(
+      searchName,
+      1,
+      10
+    );
+    console.log("[searchChannelByName]channelsData:", channelsData);
+  };
+
+  // Push Chat
   const createPushChatUser = async () => {
     const user = await pushChatClientRef.current?.createPushChatUser();
     console.log("CreatePushChatUser: response: ", user);
@@ -427,6 +540,16 @@ function App() {
           <ReactJson src={unlockedPost} collapsed={true} />
         </div>
       )}
+      <br />
+      <button onClick={getUserSubscriptions}>getUserSubscriptions</button>
+      <button onClick={getUserSpamNotifications}>getUserSpamNotifications</button>
+      <button onClick={getNotificationsByChannel}>getNotificationsByChannel</button>
+      <button onClick={subscribe}>subscribe</button>
+      <button onClick={unsubscribe}>unsubscribe</button>
+      <button onClick={sendNotification}>sendNotification</button>
+      <button onClick={getChannelDetail}>getChannelDetail</button>
+      <button onClick={getSubscriberOfChannel}>getSubscriberOfChannel</button>
+      <button onClick={searchChannelByName}>searchChannelByName</button>
       <br />
       <button onClick={createPushChatUser}>createPushChatUser</button>
       <button onClick={sendChatMessage}>sendChatMessage</button>
