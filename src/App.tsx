@@ -358,12 +358,18 @@ function App() {
     const sendChannel = "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
     const title = "Hello Title";
     const body = "Tom long time no see."
-    const res = await pushNotificationClientRef.current?.sendNotification(
-      sendChannel,
-      title,
-      body
-    );
-    console.log("[sendNotification]res:", res);
+    try {
+      const res = await pushNotificationClientRef.current?.sendNotification(
+        sendChannel,
+        title,
+        body
+      );
+      console.log("[sendNotification]res:", res);
+    } catch (error: any) {
+      if(error.message === 'this account does not have channel') {
+        console.warn("This Account doesn't have channel, please go to https://staging.push.org/ to create channel.")
+      }
+    }
   };
 
   const getChannelDetail = async () => {
@@ -403,9 +409,9 @@ function App() {
   };
 
   const sendChatMessage = async () => {
-    const msgCont = "chatMsg";
+    const msgCont = "Someting content";
     const msgType = "Text";
-    const receiver = "0x6ed14ee482d3C4764C533f56B90360b767d21D5E";
+    const receiver = "0xd10d5b408A290a5FD0C2B15074995e899E944444";
 
     const response = await pushChatClientRef.current?.sendChatMessage(
       receiver,
@@ -428,6 +434,7 @@ function App() {
     console.log("FetchHistoryChats: response: ", response);
   };
 
+  // Tableland
   const createTable = async () => {
     await switchNetwork(80001);
 
@@ -527,7 +534,7 @@ function App() {
         </div>
       )}
       <br />
-      <h2>Push Notification</h2>
+      <h2>Push Channel</h2>
       <button onClick={getUserSubscriptions}>getUserSubscriptions</button>
       <button onClick={getUserSpamNotifications}>getUserSpamNotifications</button>
       <button onClick={getNotificationsByChannel}>getNotificationsByChannel</button>
