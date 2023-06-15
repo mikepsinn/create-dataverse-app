@@ -363,20 +363,6 @@ function App() {
     }
   };
 
-  const retrieveAssetById = async () => {
-    const res = await livepeerClientRef.current?.retrieveAssetById(asset.id);
-    console.log("retrieveAssetById res:", res);
-  };
-
-  const retrieveAssets = async () => {
-    const res = await livepeerClientRef.current?.retrieveAssets();
-    console.log("retrieveAssets res:", res);
-  };
-
-  const deleteAssetById = async () => {
-    await livepeerClientRef.current?.deleteAssetById(asset.id);
-  };
-
   return (
     <div className="App">
       <button onClick={connect}>connect</button>
@@ -448,12 +434,9 @@ function App() {
             {asset?.id && (
               <LivepeerPlayer
                 reactClient={livepeerClientRef.current.reactClient}
-                playbackId={asset.id}
+                playbackId={asset.playbackId}
               />
             )}
-            <button onClick={retrieveAssetById}>retrieveAssetById</button>
-            <button onClick={retrieveAssets}>retrieveAssets</button>
-            <button onClick={deleteAssetById}>deleteAssetById</button>
           </LivepeerConfig>
         </>
       )}
