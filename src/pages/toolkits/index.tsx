@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useWallet, useStream } from "../../hooks";
-import { Context } from "../../context";
+import { Context } from "../../context/configContext";
 import { Model } from "../../types";
 import {
   PushNotificationClient,

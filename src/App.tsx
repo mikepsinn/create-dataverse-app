@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { Currency } from "@dataverse/runtime-connector";
 import { useWallet, useStream } from "./hooks";
 import ReactJson from "react-json-view";
-import { Context } from "./context";
+import { useConfig } from "./context/configContext";
 import { StreamRecord } from "./types";
 
 function App() {
-  const { appVersion, postModel } = useContext(Context);
+  const { appVersion } = useConfig();
   const navigate = useNavigate();
   const [currentStreamId, setCurrentStreamId] = useState<string>();
   const [publicPost, setPublicPost] = useState<StreamRecord>();

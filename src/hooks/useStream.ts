@@ -5,7 +5,7 @@ import {
   WALLET,
   StreamContent,
 } from "@dataverse/runtime-connector";
-import { Context } from "../context";
+import { Context } from "../context/configContext";
 import { Model, StreamsRecord } from "../types";
 import { getAddressFromDid } from "../utils";
 

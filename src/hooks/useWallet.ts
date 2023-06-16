@@ -1,6 +1,6 @@
 import { WALLET, Mode, SignMethod } from "@dataverse/runtime-connector";
 import { useContext, useState } from "react";
-import { Context } from "../context";
+import { Context } from "../context/configContext";
 
 export function useWallet() {
   const { runtimeConnector } = useContext(Context);

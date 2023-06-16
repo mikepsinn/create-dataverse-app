@@ -9,6 +9,7 @@ interface IProps {
   asset: any;
   setAsset: Function;
 }
+
 export const LivepeerWidget = ({
   address,
   livepeerClient,
