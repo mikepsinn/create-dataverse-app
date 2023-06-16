@@ -8,19 +8,16 @@ import { Model, StreamRecord } from "./types";
 import {
   PushNotificationClient,
   PushChatClient,
-  ENV,
-  ModelName as PushModelName,
+  ModelType as PushModelType,
   getICAPAddress,
+  ENV,
 } from "@dataverse/push-client-toolkit";
 
 import LivepeerClient, {
   LivepeerConfig,
 } from "@dataverse/livepeer-client-toolkit";
 
-import TablelandClient, {
-  ModelName as TablelandModelName,
-} from "@dataverse/tableland-client-toolkit";
-import { Network } from "@dataverse/tableland-client-toolkit";
+import TablelandClient, { Network } from "@dataverse/tableland-client-toolkit";
 import { LivepeerWidget, LivepeerPlayer } from "./components/Livepeer";
 
 function App() {
@@ -78,10 +75,10 @@ function App() {
         const pushChatClient = new PushChatClient({
           runtimeConnector,
           modelIds: {
-            [PushModelName.MESSAGE]: pushChatMessageModel?.stream_id!,
-            [PushModelName.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
-            [PushModelName.CHANNEL]: pushChannelModel?.stream_id!,
-            [PushModelName.NOTIFICATION]: pushNotificationModel?.stream_id!,
+            [PushModelType.MESSAGE]: pushChatMessageModel?.stream_id!,
+            [PushModelType.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
+            [PushModelType.CHANNEL]: pushChannelModel?.stream_id!,
+            [PushModelType.NOTIFICATION]: pushNotificationModel?.stream_id!,
           },
           appName: output.createDapp.name,
           env: ENV.STAGING,
@@ -93,10 +90,10 @@ function App() {
         const pushNotificationClient = new PushNotificationClient({
           runtimeConnector,
           modelIds: {
-            [PushModelName.MESSAGE]: pushChatMessageModel?.stream_id!,
-            [PushModelName.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
-            [PushModelName.CHANNEL]: pushChannelModel?.stream_id!,
-            [PushModelName.NOTIFICATION]: pushNotificationModel?.stream_id!,
+            [PushModelType.MESSAGE]: pushChatMessageModel?.stream_id!,
+            [PushModelType.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
+            [PushModelType.CHANNEL]: pushChannelModel?.stream_id!,
+            [PushModelType.NOTIFICATION]: pushNotificationModel?.stream_id!,
           },
           appName: output.createDapp.name,
           env: ENV.STAGING,
@@ -108,9 +105,7 @@ function App() {
         const tablelandClient = new TablelandClient({
           runtimeConnector,
           network: Network.MUMBAI,
-          modelIds: {
-            [TablelandModelName.TABLE]: tablelandModel?.stream_id!,
-          },
+          modelId: tablelandModel?.stream_id!,
         });
         tablelandClientRef.current = tablelandClient;
       }
@@ -574,6 +569,7 @@ function App() {
         <>
           <LivepeerConfig client={livepeerClientRef.current.reactClient!}>
             <LivepeerWidget
+              address={address}
               livepeerClient={livepeerClientRef.current}
               asset={asset}
               setAsset={setAsset}
