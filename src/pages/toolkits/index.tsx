@@ -185,9 +185,16 @@ function Toolkits() {
       );
       console.log("[sendNotification]res:", res);
     } catch (error: any) {
-      if (error.message === "this account does not have channel") {
-        console.warn(
+      if (error?.message === "this account does not have channel") {
+        console.error(
           "This Account doesn't have channel, please go to https://staging.push.org/ to create channel."
+        );
+      } else if (
+        error?.response?.data?.error?.info ===
+        "Error while verifying the verificationProof through eip712v2"
+      ) {
+        console.error(
+          "This Account doesn't have permission to sendNotification, please use your own channel to sendNotification or create a channel on https://staging.push.org/."
         );
       }
     }
@@ -263,7 +270,7 @@ function Toolkits() {
   };
 
   const getChatMessageList = async () => {
-    const msgList = await pushChatClientRef.current?.getMsgList();
+    const msgList = await pushChatClientRef.current?.getMessageList();
     console.log("ChatMessageList: response: ", msgList);
   };
 
