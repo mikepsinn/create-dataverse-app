@@ -1,15 +1,18 @@
 import "./App.css";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Currency } from "@dataverse/runtime-connector";
 import { useWallet, useStream } from "./hooks";
 import ReactJson from "react-json-view";
+import { Context } from "./context";
+import { Model, StreamRecord } from "./types";
+import { getModelByName } from "./utils";
 import { useConfig } from "./context/configContext";
-import { StreamRecord } from "./types";
 
 function App() {
-  const { appVersion } = useConfig();
   const navigate = useNavigate();
+  const { appVersion, output } = useContext(Context);
+  const [postModel, setPostModel] = useState<Model>();
   const [currentStreamId, setCurrentStreamId] = useState<string>();
   const [publicPost, setPublicPost] = useState<StreamRecord>();
   const [encryptedPost, setEncryptedPost] = useState<StreamRecord>();
@@ -33,6 +36,11 @@ function App() {
     updateStream,
   } = useStream();
 
+  useEffect(() => {
+    const postModel = getModelByName(`${output.createDapp.slug}_post`);
+    setPostModel(postModel);
+  }, [output]);
+
   const connect = async () => {
     const { wallet } = await connectWallet();
     const pkh = await createCapability(wallet);
@@ -41,6 +49,10 @@ function App() {
   };
 
   const createPublicPost = async () => {
+    if (!postModel) {
+      console.error("postModel undefined");
+      return;
+    }
     const date = new Date().toISOString();
     const { streamId, ...streamRecord } = await createPublicStream({
       pkh,
@@ -62,6 +74,11 @@ function App() {
   };
 
   const createEncryptedPost = async () => {
+    if (!postModel) {
+      console.error("postModel undefined");
+      return;
+    }
+
     const date = new Date().toISOString();
     const { streamId, ...streamRecord } = await createEncryptedStream({
       model: postModel,
@@ -87,6 +104,11 @@ function App() {
   };
 
   const createPayablePost = async () => {
+    if (!postModel) {
+      console.error("postModel undefined");
+      return;
+    }
+
     const date = new Date().toISOString();
     const { streamId, ...streamRecord } = await createPayableStream({
       pkh,
@@ -117,6 +139,11 @@ function App() {
   };
 
   const loadPosts = async () => {
+    if (!postModel) {
+      console.error("postModel undefined");
+      return;
+    }
+
     const postRecord = await loadStreams({
       pkh,
       modelId: postModel.stream_id,
@@ -126,7 +153,12 @@ function App() {
   };
 
   const updatePost = async () => {
+    if (!postModel) {
+      console.error("postModel undefined");
+      return;
+    }
     if (!currentStreamId) {
+      console.error("currentStreamId undefined");
       return;
     }
     const { streamId, ...streamRecord } = await updateStream({
@@ -149,7 +181,12 @@ function App() {
   };
 
   const monetizePost = async () => {
+    if (!postModel) {
+      console.error("postModel undefined");
+      return;
+    }
     if (!currentStreamId) {
+      console.error("currentStreamId undefined");
       return;
     }
     const { streamId, ...streamRecord } = await monetizeStream({
