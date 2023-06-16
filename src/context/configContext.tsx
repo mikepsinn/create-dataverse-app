@@ -1,5 +1,5 @@
+import React, { ReactNode, createContext, useContext } from "react";
 import { Extension, RuntimeConnector } from "@dataverse/runtime-connector";
-import { ReactNode, createContext, useContext } from "react";
 import { Model, Output } from "../types";
 import { getOutput } from "../utils/model";
 

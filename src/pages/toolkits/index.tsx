@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useWallet, useStream } from "../../hooks";
-import { Context } from "../../context/configContext";
+import { useConfig } from "../../context/configContext";
 import { Model } from "../../types";
 import {
   PushNotificationClient,
@@ -20,7 +20,7 @@ import { LivepeerWidget, LivepeerPlayer } from "../../components/Livepeer";
 import { getModelByName } from "../../utils";
 
 function Toolkits() {
-  const { output, runtimeConnector } = useContext(Context);
+  const { runtimeConnector, output } = useConfig();
   const [pushChannelModel, setPushChannelModel] = useState<Model>();
   const pushChatClientRef = useRef<PushChatClient>();
   const pushNotificationClientRef = useRef<PushNotificationClient>();
@@ -31,80 +31,77 @@ function Toolkits() {
   const [asset, setAsset] = useState<any>(null);
 
   const { address, connectWallet, switchNetwork } = useWallet();
+  const { pkh, createCapability } = useStream();
 
   useEffect(() => {
-    (async () => {
-      const appName = output.createDapp.name;
-      const appSlug = output.createDapp.slug;
+    const appName = output.createDapp.name;
+    const appSlug = output.createDapp.slug;
 
-      const pushChatMessageModel = getModelByName(`${appSlug}_pushchatmessage`);
+    const pushChatMessageModel = getModelByName(`${appSlug}_pushchatmessage`);
 
-      const pushChannelModel = getModelByName(`${appSlug}_pushchannel`);
+    const pushChannelModel = getModelByName(`${appSlug}_pushchannel`);
 
-      const pushChatGPGKeyModel = getModelByName(`${appSlug}_pushchatgpgkey`);
+    const pushChatGPGKeyModel = getModelByName(`${appSlug}_pushchatgpgkey`);
 
-      const pushNotificationModel = getModelByName(`${appSlug}_pushnotification`);
+    const pushNotificationModel = getModelByName(`${appSlug}_pushnotification`);
 
-      const livepeerModel = getModelByName(`${appSlug}_livepeerasset`);
+    const livepeerModel = getModelByName(`${appSlug}_livepeerasset`);
 
-      const tablelandModel = getModelByName(`${appSlug}_table`);
+    const tablelandModel = getModelByName(`${appSlug}_table`);
 
-      if (pushChatMessageModel) {
-        const pushChatClient = new PushChatClient({
-          runtimeConnector,
-          modelIds: {
-            [PushModelType.MESSAGE]: pushChatMessageModel?.stream_id!,
-            [PushModelType.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
-            [PushModelType.CHANNEL]: pushChannelModel?.stream_id!,
-            [PushModelType.NOTIFICATION]: pushNotificationModel?.stream_id!,
-          },
-          appName: output.createDapp.name,
-          env: ENV.STAGING,
-        });
-        pushChatClientRef.current = pushChatClient;
-      }
+    if (pushChatMessageModel) {
+      const pushChatClient = new PushChatClient({
+        runtimeConnector,
+        modelIds: {
+          [PushModelType.MESSAGE]: pushChatMessageModel?.stream_id!,
+          [PushModelType.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
+          [PushModelType.CHANNEL]: pushChannelModel?.stream_id!,
+          [PushModelType.NOTIFICATION]: pushNotificationModel?.stream_id!,
+        },
+        appName: output.createDapp.name,
+        env: ENV.STAGING,
+      });
+      pushChatClientRef.current = pushChatClient;
+    }
 
-      if (pushNotificationModel) {
-        const pushNotificationClient = new PushNotificationClient({
-          runtimeConnector,
-          modelIds: {
-            [PushModelType.MESSAGE]: pushChatMessageModel?.stream_id!,
-            [PushModelType.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
-            [PushModelType.CHANNEL]: pushChannelModel?.stream_id!,
-            [PushModelType.NOTIFICATION]: pushNotificationModel?.stream_id!,
-          },
-          appName: output.createDapp.name,
-          env: ENV.STAGING,
-        });
-        pushNotificationClientRef.current = pushNotificationClient;
-      }
+    if (pushNotificationModel) {
+      const pushNotificationClient = new PushNotificationClient({
+        runtimeConnector,
+        modelIds: {
+          [PushModelType.MESSAGE]: pushChatMessageModel?.stream_id!,
+          [PushModelType.USER_PGP_KEY]: pushChatGPGKeyModel?.stream_id!,
+          [PushModelType.CHANNEL]: pushChannelModel?.stream_id!,
+          [PushModelType.NOTIFICATION]: pushNotificationModel?.stream_id!,
+        },
+        appName: output.createDapp.name,
+        env: ENV.STAGING,
+      });
+      pushNotificationClientRef.current = pushNotificationClient;
+    }
 
-      if (tablelandModel) {
-        const tablelandClient = new TablelandClient({
-          runtimeConnector,
-          network: Network.MUMBAI,
-          modelId: tablelandModel?.stream_id,
-        });
-        tablelandClientRef.current = tablelandClient;
-      }
+    if (tablelandModel) {
+      const tablelandClient = new TablelandClient({
+        runtimeConnector,
+        network: Network.MUMBAI,
+        modelId: tablelandModel?.stream_id,
+      });
+      tablelandClientRef.current = tablelandClient;
+    }
 
-      if (livepeerModel) {
-        const livepeerClient = new LivepeerClient({
-          apiKey: "6bbdad77-25ed-42b9-9b6d-b419766410f7",
-          runtimeConnector,
-          modelId: livepeerModel.stream_id,
-          appName,
-        });
-        livepeerClientRef.current = livepeerClient;
-      }
+    if (livepeerModel) {
+      const livepeerClient = new LivepeerClient({
+        apiKey: "6bbdad77-25ed-42b9-9b6d-b419766410f7",
+        runtimeConnector,
+        modelId: livepeerModel.stream_id,
+        appName,
+      });
+      livepeerClientRef.current = livepeerClient;
+    }
 
-      if (pushChannelModel) {
-        setPushChannelModel(pushChannelModel);
-      }
-    })();
+    if (pushChannelModel) {
+      setPushChannelModel(pushChannelModel);
+    }
   }, []);
-
-  const { pkh, createCapability } = useStream();
 
   const connect = async () => {
     const { wallet } = await connectWallet();

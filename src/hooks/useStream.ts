@@ -5,13 +5,14 @@ import {
   WALLET,
   StreamContent,
 } from "@dataverse/runtime-connector";
-import { Context } from "../context/configContext";
+import { useConfig } from "../context/configContext";
 import { Model, StreamsRecord } from "../types";
 import { getAddressFromDid } from "../utils";
+import { useUser } from "../context/userContext";
 
 export function useStream() {
-  const { runtimeConnector, output } = useContext(Context);
-  const [pkh, setPkh] = useState("");
+  const { runtimeConnector, output } = useConfig();
+  const { userInfo, updateUserInfo } = useUser();
   const [streamsRecord, setStreamsRecord] = useState<StreamsRecord>({});
 
   const checkCapability = async () => {
@@ -24,8 +25,7 @@ export function useStream() {
       wallet,
       app: output.createDapp.name,
     });
-
-    setPkh(currentPkh);
+    updateUserInfo({ pkh: currentPkh });
     return currentPkh;
   };
 
@@ -373,7 +373,7 @@ export function useStream() {
   };
 
   return {
-    pkh,
+    pkh: userInfo.pkh,
     streamsRecord,
     checkCapability,
     createCapability,

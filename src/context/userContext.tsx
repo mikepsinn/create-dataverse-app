@@ -1,49 +1,55 @@
-import React, {
-  Dispatch,
-  ReactNode,
-  createContext,
-  useReducer,
-} from "react";
+import React, { Dispatch, ReactNode, createContext, useReducer } from "react";
 
 const initialState = {
   address: "",
+  wallet: "",
   pkh: "",
 };
 
-interface State {
+const actions = {
+  USER_INFO_UPDATE: "user_info_update",
+};
+
+interface UserInfo {
   address: string;
+  wallet: string;
   pkh: string;
 }
 
 interface ContextType {
-  state: State;
-  dispatch: Dispatch<any>;
+  userInfo: UserInfo;
+  updateUserInfo: Dispatch<Partial<UserInfo>>;
 }
 
-const updateUser = (state: any, userInfo: any) => ({
+const updateUserInfo = (state: any, userInfo: UserInfo) => ({
   ...state,
-  ...{ user: userInfo },
+  ...userInfo,
 });
 
 const reducer = (state: any, action: any) => {
   switch (action.type) {
-    case "updateUser":
-      return updateUser(state, action.payload);
+    case actions.USER_INFO_UPDATE:
+      const a = updateUserInfo(state, action.payload);
+      return a;
     default:
       throw new Error();
   }
 };
 
 const UserContext = createContext<ContextType>({
-  state: initialState,
-  dispatch: (dispatch: any) => {},
+  userInfo: initialState,
+  updateUserInfo: (userInfo: Partial<UserInfo>) => {},
 } as ContextType);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const updateUserInfo = (userInfo: Partial<UserInfo>) => {
+    dispatch({ type: actions.USER_INFO_UPDATE, payload: userInfo });
+  };
+
   return (
-    <UserContext.Provider value={{ state, dispatch }}>
+    <UserContext.Provider value={{ userInfo: state, updateUserInfo }}>
       {children}
     </UserContext.Provider>
   );
