@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import { useCreateAsset, useUpdateAsset } from "@livepeer/react";
 import LivepeerClient from "@dataverse/livepeer-client-toolkit";
+import { Currency } from "@dataverse/runtime-connector";
 
 interface IProps {
+  address?: string;
   livepeerClient: LivepeerClient;
   asset: any;
   setAsset: Function;
 }
-export const LivepeerWidget = ({ livepeerClient, asset, setAsset }: IProps) => {
+export const LivepeerWidget = ({
+  address,
+  livepeerClient,
+  asset,
+  setAsset,
+}: IProps) => {
   const [loading, setLoading] = useState(false);
   const [fileInput, setFileInput] = useState<any>(null);
+  const [streamId, setStreamId] = useState<string>();
   const { mutateAsync: createAssetAsync } = useCreateAsset(
     fileInput
       ? {
@@ -41,7 +49,8 @@ export const LivepeerWidget = ({ livepeerClient, asset, setAsset }: IProps) => {
         throw new Error((asset[0] as any).status.errorMessage);
       }
       const res = await livepeerClient.persistAssetMeta(asset[0]);
-      console.log("livepeerClient createAssetMetaStream res: ", res);
+      console.log("livepeerClient createAssetMeta res: ", res);
+      setStreamId(res.streamId);
       setAsset(asset[0]);
       console.log("File uploaded successfully");
       setLoading(false);
@@ -62,7 +71,7 @@ export const LivepeerWidget = ({ livepeerClient, asset, setAsset }: IProps) => {
         throw new Error("Asset undefined");
       }
       const res = await livepeerClient.persistAssetMeta(asset);
-      console.log("livepeerClient updateAssetMetaStream res: ", res);
+      console.log("livepeerClient updateAssetMeta res: ", res);
       setAsset(asset);
       console.log("Asset saved to Ipfs successfully");
       setLoading(false);
@@ -83,7 +92,25 @@ export const LivepeerWidget = ({ livepeerClient, asset, setAsset }: IProps) => {
 
   const getAssetMetaList = async () => {
     const res = await livepeerClient.getAssetMetaList();
-    console.log("res:", res);
+    console.log("getAssetMetaList res:", res);
+  };
+
+  const monetizeAssetMeta = async () => {
+    if (!streamId || !address) {
+      console.error("streamId or address undefined");
+      return;
+    }
+    await livepeerClient.monetizeAssetMeta({
+      address,
+      streamId,
+      lensNickName: "jackieth",
+      datatokenVars: {
+        currency: Currency.WMATIC,
+        amount: 0.0001,
+        collectLimit: 1000,
+      },
+    });
+    console.log("monetizeAssetMeta success.");
   };
 
   return (
@@ -101,6 +128,7 @@ export const LivepeerWidget = ({ livepeerClient, asset, setAsset }: IProps) => {
         UploadFileToIpfs
       </button>
       <button onClick={getAssetMetaList}>getAssetMetaList</button>
+      <button onClick={monetizeAssetMeta}>monetizeAssetMeta</button>
     </div>
   );
 };
