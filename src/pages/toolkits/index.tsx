@@ -368,6 +368,7 @@ function Toolkits() {
         <>
           <LivepeerConfig client={livepeerClientRef.current.reactClient!}>
             <LivepeerWidget
+              address={address}
               livepeerClient={livepeerClientRef.current}
               asset={asset}
               setAsset={setAsset}
