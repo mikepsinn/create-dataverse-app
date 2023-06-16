@@ -17,6 +17,7 @@ import LivepeerClient, {
 import TablelandClient from "@dataverse/tableland-client-toolkit";
 import { Network } from "@dataverse/tableland-client-toolkit";
 import { LivepeerWidget, LivepeerPlayer } from "../../components/Livepeer";
+import { getModelByName } from "../../utils";
 
 function Toolkits() {
   const { output, runtimeConnector } = useContext(Context);
@@ -33,32 +34,20 @@ function Toolkits() {
 
   useEffect(() => {
     (async () => {
-      const name = output.createDapp.name;
-      const slug = output.createDapp.slug;
+      const appName = output.createDapp.name;
+      const appSlug = output.createDapp.slug;
 
-      const pushChatMessageModel = output.createDapp.streamIDs.find(
-        (item) => item.name === `${slug}_pushchatmessage`
-      );
+      const pushChatMessageModel = getModelByName(`${appSlug}_pushchatmessage`);
 
-      const pushChannelModel = output.createDapp.streamIDs.find(
-        (item) => item.name === `${slug}_pushchannel`
-      );
+      const pushChannelModel = getModelByName(`${appSlug}_pushchannel`);
 
-      const pushChatGPGKeyModel = output.createDapp.streamIDs.find(
-        (item) => item.name === `${slug}_pushchatgpgkey`
-      );
+      const pushChatGPGKeyModel = getModelByName(`${appSlug}_pushchatgpgkey`);
 
-      const pushNotificationModel = output.createDapp.streamIDs.find(
-        (item) => item.name === `${slug}_pushnotification`
-      );
+      const pushNotificationModel = getModelByName(`${appSlug}_pushnotification`);
 
-      const livepeerModel = output.createDapp.streamIDs.find(
-        (item) => item.name === `${slug}_livepeerasset`
-      );
+      const livepeerModel = getModelByName(`${appSlug}_livepeerasset`);
 
-      const tablelandModel = output.createDapp.streamIDs.find(
-        (item) => item.name === `${slug}_table`
-      );
+      const tablelandModel = getModelByName(`${appSlug}_table`);
 
       if (pushChatMessageModel) {
         const pushChatClient = new PushChatClient({
@@ -104,7 +93,7 @@ function Toolkits() {
           apiKey: "6bbdad77-25ed-42b9-9b6d-b419766410f7",
           runtimeConnector,
           modelId: livepeerModel.stream_id,
-          appName: name,
+          appName,
         });
         livepeerClientRef.current = livepeerClient;
       }
