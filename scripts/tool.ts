@@ -3,19 +3,20 @@ import path from "path";
 import crlf from "crlf";
 
 export async function readModels() {
-  const res = fs.readdirSync(`${process.cwd()}/models`);
   const schemas: Record<string, string> = {};
 
+  const __rootModelsDirname = `${process.cwd()}/models`;
+  const rootModels = fs.readdirSync(__rootModelsDirname);
+
   await Promise.all(
-    res.map(async (fileName) => {
-      if (fileName === "fs") {
+    rootModels.map(async (fileName) => {
+      if (fileName === "fs" || fileName === "toolkits") {
         return;
       }
-      const __modelsDirname = `${process.cwd()}/models`;
 
       const endingType = await new Promise((resolve) => {
         crlf.get(
-          `${__modelsDirname}/${fileName}`,
+          `${__rootModelsDirname}/${fileName}`,
           null,
           function (err, endingType) {
             resolve(endingType);
@@ -25,13 +26,13 @@ export async function readModels() {
 
       if (endingType === "CRLF") {
         await new Promise((resolve) => {
-          crlf.set(`${__modelsDirname}/${fileName}`, "LF", function () {
+          crlf.set(`${__rootModelsDirname}/${fileName}`, "LF", function () {
             resolve("");
           });
         });
       }
 
-      const filePath = path.resolve(__modelsDirname, fileName);
+      const filePath = path.resolve(__rootModelsDirname, fileName);
       if (fs.statSync(filePath).isFile()) {
         schemas[fileName] = fs
           .readFileSync(filePath, { encoding: "utf8" })
@@ -40,6 +41,40 @@ export async function readModels() {
       }
     })
   );
+
+  const __toolkitsModelsDirname = `${process.cwd()}/models/toolkits`;
+  const toolkitsModels = fs.readdirSync(__toolkitsModelsDirname);
+
+  await Promise.all(
+    toolkitsModels.map(async (fileName) => {
+      const endingType = await new Promise((resolve) => {
+        crlf.get(
+          `${__toolkitsModelsDirname}/${fileName}`,
+          null,
+          function (err, endingType) {
+            resolve(endingType);
+          }
+        );
+      });
+
+      if (endingType === "CRLF") {
+        await new Promise((resolve) => {
+          crlf.set(`${__toolkitsModelsDirname}/${fileName}`, "LF", function () {
+            resolve("");
+          });
+        });
+      }
+
+      const filePath = path.resolve(__toolkitsModelsDirname, fileName);
+      if (fs.statSync(filePath).isFile()) {
+        schemas[fileName] = fs
+          .readFileSync(filePath, { encoding: "utf8" })
+          //@ts-ignore
+          .replaceAll("\n", "");
+      }
+    })
+  );
+  
   return schemas;
 }
 
