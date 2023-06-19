@@ -4,14 +4,16 @@ import {
   Currency,
   WALLET,
   StreamContent,
+  DecryptionConditions,
 } from "@dataverse/runtime-connector";
-import { Context } from "../context";
+import { useConfig } from "../context/configContext";
 import { Model, StreamsRecord } from "../types";
 import { getAddressFromDid } from "../utils";
+import { useUser } from "../context/userContext";
 
 export function useStream() {
-  const { runtimeConnector, output } = useContext(Context);
-  const [pkh, setPkh] = useState("");
+  const { runtimeConnector, output } = useConfig();
+  const { userInfo, updateUserInfo } = useUser();
   const [streamsRecord, setStreamsRecord] = useState<StreamsRecord>({});
 
   const checkCapability = async () => {
@@ -24,8 +26,7 @@ export function useStream() {
       wallet,
       app: output.createDapp.name,
     });
-
-    setPkh(currentPkh);
+    updateUserInfo({ pkh: currentPkh });
     return currentPkh;
   };
 
@@ -190,6 +191,7 @@ export function useStream() {
     currency,
     amount,
     collectLimit,
+    decryptionConditions,
   }: {
     pkh: string;
     modelId: string;
@@ -200,6 +202,7 @@ export function useStream() {
     currency: Currency;
     amount: number;
     collectLimit: number;
+    decryptionConditions?: DecryptionConditions;
   }) => {
     try {
       if (!profileId) {
@@ -218,6 +221,7 @@ export function useStream() {
             amount,
             collectLimit,
           },
+          decryptionConditions,
         });
       if (updatedStreamContent) {
         return _updateStreamRecord({
@@ -373,7 +377,7 @@ export function useStream() {
   };
 
   return {
-    pkh,
+    pkh: userInfo.pkh,
     streamsRecord,
     checkCapability,
     createCapability,

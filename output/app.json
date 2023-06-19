@@ -1,43 +1,86 @@
 {
   "createDapp": {
-    "id": "9e559191-f51c-4964-8c28-6acf094a7dbf",
+    "id": "79b92119-a23b-45bf-a704-2fc784b4b5d6",
     "streamIDs": [
       {
-        "name": "test001_profile",
-        "stream_id": "kjzl6hvfrbw6c63ph9w9ya4y5x069g6t4neess76ut792wz4l27vhz7a7mohso9",
+        "name": "toolkits_test004_profile",
+        "stream_id": "kjzl6hvfrbw6c7uo6pyluo9b2rwbdoqh7f92x9z9omicuim6jfqml0fzt9x5dnd",
         "isPublicDomain": true,
         "encryptable": null
       },
       {
-        "name": "test001_post",
-        "stream_id": "kjzl6hvfrbw6c9k5a5v8gph1asovcygtq10fhuhp96q527ss6czmy95eclkdhxo",
+        "name": "toolkits_test004_pushchatgpgkey",
+        "stream_id": "kjzl6hvfrbw6c8wqlwjxnflm5vb8d1t8yfw0coww3dl538la397o5lzj4gyfoxj",
+        "isPublicDomain": false,
+        "encryptable": ["pgp_key"]
+      },
+      {
+        "name": "toolkits_test004_indexFiles",
+        "stream_id": "kjzl6hvfrbw6c6nlb28ikcpnjrzyi2wojiczbko29e77ejdebomhskacmn8uelw",
+        "isPublicDomain": false,
+        "encryptable": null
+      },
+      {
+        "name": "toolkits_test004_post",
+        "stream_id": "kjzl6hvfrbw6c5yyg173tdv0g4mko23pdev3jdf4geji1ncypkv65bir6gbsboq",
         "isPublicDomain": false,
         "encryptable": ["text", "images", "videos"]
       },
       {
-        "name": "test001_indexFolders",
-        "stream_id": "kjzl6hvfrbw6c88omz2evxcsot8u2wh9mk63locjdaqtg8i80dc77e4zykwzdix",
+        "name": "toolkits_test004_livepeerasset",
+        "stream_id": "kjzl6hvfrbw6c777u02e7zqoy1ehlvrsiodavon43b4p5e3nicjbdlz623g812x",
+        "isPublicDomain": false,
+        "encryptable": [
+          "asset_id",
+          "storage",
+          "playback_id",
+          "playback_url",
+          "download_url"
+        ]
+      },
+      {
+        "name": "toolkits_test004_contentFolders",
+        "stream_id": "kjzl6hvfrbw6c7rbxxx27bdww1so6e1gb7lzwd7dw91bkr38hvmc3jcvsoo4nrc",
         "isPublicDomain": false,
         "encryptable": null
       },
       {
-        "name": "test001_contentFolders",
-        "stream_id": "kjzl6hvfrbw6c7rx6onxtx2egnx0wqlo5apoh7ne5lwsyzmkksepnlt2i0hif3e",
+        "name": "toolkits_test004_table",
+        "stream_id": "kjzl6hvfrbw6c7yf8pq1qnvram8qzgpog2w0t9ex02x9fi7lc5s8invf0swyo4n",
         "isPublicDomain": false,
-        "encryptable": null
+        "encryptable": []
       },
       {
-        "name": "test001_indexFiles",
-        "stream_id": "kjzl6hvfrbw6c8gbujjy52lqt1mke6m55d6s2a3xze19nxdbg7vdg7eh0klt9qw",
+        "name": "toolkits_test004_pushchannel",
+        "stream_id": "kjzl6hvfrbw6c600t75fd5w3lfak4phs29po8s7o3i76oi6gzhq8cm54tx76d0l",
+        "isPublicDomain": false,
+        "encryptable": []
+      },
+      {
+        "name": "toolkits_test004_pushnotification",
+        "stream_id": "kjzl6hvfrbw6c8f9i2l7kvs1evlavsabah2lnbnsh4ya4dz7b59d90pmab0jgoe",
+        "isPublicDomain": false,
+        "encryptable": []
+      },
+      {
+        "name": "toolkits_test004_pushchatmessage",
+        "stream_id": "kjzl6hvfrbw6c51daexjx6ekrktxl9pexvtwqv073sapwlmi7l0ierggy617ot0",
+        "isPublicDomain": false,
+        "encryptable": ["link", "cid"]
+      },
+      {
+        "name": "toolkits_test004_indexFolders",
+        "stream_id": "kjzl6hvfrbw6c9fb17d440mk4r7g24i0qlmf6sghatcyl2k3w97jup7a9y6kbxd",
         "isPublicDomain": false,
         "encryptable": null
       }
     ],
     "website": "",
-    "name": "test001",
-    "slug": "test001",
-    "logo": "",
+    "name": "toolkits_test004",
+    "slug": "toolkits_test004",
+    "logo": "http://no-logo.com",
     "description": "",
-    "defaultFolderName": "Untitled"
+    "defaultFolderName": "Untitled",
+    "ceramic": "https://local1.dataverseceramicdaemon.com"
   }
 }

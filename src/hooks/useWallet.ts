@@ -1,15 +1,16 @@
 import { WALLET, Mode, SignMethod } from "@dataverse/runtime-connector";
-import { useContext, useState } from "react";
-import { Context } from "../context";
+import { useState } from "react";
+import { useConfig } from "../context/configContext";
+import { useUser } from "../context/userContext";
 
 export function useWallet() {
-  const { runtimeConnector } = useContext(Context);
-  const [wallet, setWallet] = useState<WALLET>();
+  const { runtimeConnector } = useConfig();
+  const { userInfo, updateUserInfo } = useUser();
 
   const connectWallet = async () => {
-    const { address, wallet } = await runtimeConnector.connectWallet();
+    const { wallet, address, chain } = await runtimeConnector.connectWallet();
+    updateUserInfo({ address, wallet });
     console.log("Connect res:", { address, wallet });
-    setWallet(wallet);
     return {
       address,
       wallet,
@@ -56,7 +57,8 @@ export function useWallet() {
   };
 
   return {
-    wallet,
+    wallet: userInfo.wallet,
+    address: userInfo.address,
     connectWallet,
     switchNetwork,
     sign,
