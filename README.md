@@ -104,6 +104,16 @@ We provide simple hooks & components in `src/`. Now run the frontend to interact
     updateStream,
   } = useStream();
 ```
+## Use toolkits
+[External-Toolkits](https://github.com/dataverse-os/external-toolkits) are a set of tools to help developers integrate DataverseOS with other Web3 protocols, such as [Tableland](https://tableland.xyz/), [Livepeer](https://livepeer.org/), [Push](https://staging.push.org/). Check more details [here](https://github.com/dataverse-os/external-toolkits).
+
+You can explore more features in `Toolkits Page`.
+
+<p align="center">
+<a href=" " target="_blank">
+<img src="https://s2.loli.net/2023/06/19/CveOImi4LswYX6D.png" width="300" alt="Dataverse logo">
+</a >
+</p >
 
 # Contributing
 
