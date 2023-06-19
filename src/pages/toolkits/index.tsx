@@ -90,7 +90,7 @@ function Toolkits() {
 
     if (livepeerModel) {
       const livepeerClient = new LivepeerClient({
-        apiKey: "6bbdad77-25ed-42b9-9b6d-b419766410f7",
+        apiKey: "19b7bc0c-84f8-4fd1-b8ac-db9fa56c0dff",
         runtimeConnector,
         modelId: livepeerModel.stream_id,
         appName,
@@ -143,7 +143,7 @@ function Toolkits() {
 
   const subscribe = async () => {
     const subscribeChannel =
-      "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
+      "eip155:5:0xd10d5b408A290a5FD0C2B15074995e899E944444";
     try {
       await pushNotificationClientRef.current?.subscribeChannel(
         subscribeChannel
@@ -156,7 +156,7 @@ function Toolkits() {
 
   const unsubscribe = async () => {
     const subscribeChannel =
-      "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
+      "eip155:5:0xd10d5b408A290a5FD0C2B15074995e899E944444";
     try {
       await pushNotificationClientRef.current?.unsubscribeChannel(
         subscribeChannel
@@ -168,7 +168,7 @@ function Toolkits() {
   };
 
   const sendNotification = async () => {
-    const sendChannel = "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
+    const sendChannel = "eip155:5:0xd10d5b408A290a5FD0C2B15074995e899E944444";
     const title = "Hello Title";
     const body = "Tom long time no see.";
     const img =
@@ -201,14 +201,14 @@ function Toolkits() {
   };
 
   const getChannelDetail = async () => {
-    const detailChannel = "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
+    const detailChannel = "eip155:5:0xd10d5b408A290a5FD0C2B15074995e899E944444";
     const channelData =
       await pushNotificationClientRef.current?.getChannelDetail(detailChannel);
     console.log("[getChannelDetail]channelData:", channelData);
   };
 
   const getSubscriberOfChannel = async () => {
-    const queryChannel = "eip155:5:0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
+    const queryChannel = "eip155:5:0xd10d5b408A290a5FD0C2B15074995e899E944444";
     const page = 1;
     const limit = 10;
     const subscribers =
@@ -246,7 +246,7 @@ function Toolkits() {
   const sendChatMessage = async () => {
     const msgCont = "Someting content";
     const msgType = "Text";
-    const receiver = "0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
+    const receiver = "0x13a6D1fe418de7e5B03Fb4a15352DfeA3249eAA4";
 
     const response = await pushChatClientRef.current?.sendChatMessage(
       receiver,
@@ -258,7 +258,7 @@ function Toolkits() {
   };
 
   const fetchHistoryChats = async () => {
-    const receiver = "0xcbeE6DdA2347C0EC0e45870d4D6cf3526a2E319C";
+    const receiver = "0x13a6D1fe418de7e5B03Fb4a15352DfeA3249eAA4";
     const limit = 30;
 
     const response = await pushChatClientRef.current?.fetchHistoryChats(
