@@ -7,7 +7,7 @@ export default defineConfig({
     dedupe: ["react", "react-dom"],
     alias: {
       // buffer: "rollup-plugin-node-polyfills/polyfills/buffer-es6", // add buffer
-      events: require.resolve("rollup-plugin-node-polyfills/polyfills/events"),
+      events: "rollup-plugin-node-polyfills/polyfills/events",
     },
   },
   optimizeDeps: {
