@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import { readModels, writeToOutput } from "./tool";
 import { CreateDappProps } from "./types";
 import chalk from "chalk";
+import { createAbstractCompositeDefinition } from "@composedb/devtools";
 
 export const DATAVERSE_ENDPOINT =
   "https://gateway.beta.dataverse.art/v1/dapp-table";
@@ -52,11 +53,24 @@ export const createDapp = async () => {
     return;
   }
 
+  Object.keys(models).map((key, index) => {
+    try {
+      createAbstractCompositeDefinition(models[key]);
+    } catch (error) {
+      console.log(
+        chalk.redBright(
+          `Error in ${key}: ${(error as Error).toString().split("\n")[0]}`
+        )
+      );
+      return;
+    }
+  });
+
   let fileSystemModels;
   try {
     fileSystemModels = await getFileSystemModels(params.slug);
   } catch (error) {
-    console.log(error);
+    console.log({ error });
     return;
   }
 

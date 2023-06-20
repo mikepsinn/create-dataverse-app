@@ -8,4 +8,5 @@ type post @createModel(accountRelation: LIST, description: "post") {
   options: String @string(maxLength: 300000000)
   createdAt: DateTime!
   updatedAt: DateTime!
+  comments: [String]
 }
