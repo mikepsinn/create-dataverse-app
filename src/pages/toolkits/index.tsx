@@ -99,7 +99,7 @@ function Toolkits() {
 
     if (livepeerModel) {
       const livepeerClient = new LivepeerClient({
-        apiKey: "ba0a0c12-2dab-4131-9fb4-53b7316e4773",
+        apiKey: (import.meta as any).env.VITE_LIVEPEER_API_KEY,
         runtimeConnector,
         modelId: livepeerModel.stream_id,
         appName,
