@@ -35,7 +35,7 @@ pnpm install
 you can see the demo app running at http://localhost:5173.
 <p align="center">
 <a href=" " target="_blank">
-<img src="https://s2.loli.net/2023/06/13/9B7TYLgSbcf1xHy.png" width="300" alt="Dataverse logo">
+<img src="https://s2.loli.net/2023/06/21/yYHCeZXA82PzJiV.png" width="300" alt="Dataverse logo">
 </a >
 </p >
 
