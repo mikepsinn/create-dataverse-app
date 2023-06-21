@@ -11,7 +11,7 @@
 The starter kit for developers to build their own application on top of [Dataverse](https://dataverse-os.com) operating system.
 
 - Read [Developer Documentation](https://gitbook.dataverse-os.com/) to integrate [Runtime-SDK](https://github.com/dataverse-os/runtime-connector)
-- Download [Data Wallet](https://github.com/dataverse-os/create-dataverse-app/releases/tag/DataWallet-0.5.33) to run OS Kernel and expose system calls to devs (Chrome version will be ready soon)
+- Download [Data Wallet](https://chrome.google.com/webstore/detail/dataverse/kcigpjcafekokoclamfendmaapcljead) to run OS Kernel and expose system calls to devs (Chrome version will be ready soon)
 
 Note: Ensure your Metamask version is 10.28.3 or newer before you try data wallet.
 
