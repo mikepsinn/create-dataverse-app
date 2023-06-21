@@ -14,6 +14,10 @@ import LivepeerClient, {
   LivepeerConfig,
 } from "@dataverse/livepeer-client-toolkit";
 
+import XmtpClient, {
+  ModelType as XmtpModelType,
+} from "@dataverse/xmtp-client-toolkit";
+
 import TablelandClient from "@dataverse/tableland-client-toolkit";
 import { Network } from "@dataverse/tableland-client-toolkit";
 import { LivepeerWidget, LivepeerPlayer } from "../../components/Livepeer";
@@ -26,6 +30,7 @@ function Toolkits() {
   const pushNotificationClientRef = useRef<PushNotificationClient>();
   const livepeerClientRef = useRef<LivepeerClient>();
   const tablelandClientRef = useRef<TablelandClient>();
+  const xmtpClientRef = useRef<XmtpClient>();
   const [tableId, setTableId] = useState<string>();
   const [tableName, setTableName] = useState<string>();
   const [asset, setAsset] = useState<any>(null);
@@ -48,6 +53,10 @@ function Toolkits() {
     const livepeerModel = getModelByName(`${appSlug}_livepeerasset`);
 
     const tablelandModel = getModelByName(`${appSlug}_table`);
+
+    const xmtpkeycacheModel = getModelByName(`${appSlug}_xmtpkeycache`);
+
+    const xmtpmessageModel = getModelByName(`${appSlug}_xmtpmessage`);
 
     if (pushChatMessageModel) {
       const pushChatClient = new PushChatClient({
@@ -90,7 +99,7 @@ function Toolkits() {
 
     if (livepeerModel) {
       const livepeerClient = new LivepeerClient({
-        apiKey: "19b7bc0c-84f8-4fd1-b8ac-db9fa56c0dff",
+        apiKey: (import.meta as any).env.VITE_LIVEPEER_API_KEY,
         runtimeConnector,
         modelId: livepeerModel.stream_id,
         appName,
@@ -100,6 +109,19 @@ function Toolkits() {
 
     if (pushChannelModel) {
       setPushChannelModel(pushChannelModel);
+    }
+
+    if (xmtpkeycacheModel && xmtpmessageModel) {
+      const xmtpClient = new XmtpClient({
+        runtimeConnector,
+        appName,
+        modelIds: {
+          [XmtpModelType.MESSAGE]: xmtpmessageModel.stream_id,
+          [XmtpModelType.KEYS_CACHE]: xmtpkeycacheModel.stream_id,
+        },
+        env: "production",
+      });
+      xmtpClientRef.current = xmtpClient;
     }
   }, []);
 
@@ -324,6 +346,42 @@ function Toolkits() {
     console.log("tables: ", tables);
   };
 
+  // Xmtp
+  const isUserOnNetowork = async () => {
+    const isOnNetwork = await xmtpClientRef.current?.isUserOnNetwork(
+      address,
+      "production"
+    );
+    console.log("isUserOnNetowork:", isOnNetwork);
+  };
+
+  const sendMessageToMsgReceiver = async () => {
+    const msgReceiver = "0x13a6D1fe418de7e5B03Fb4a15352DfeA3249eAA4";
+
+    const res = await xmtpClientRef.current?.sendMessageTo({
+      user: msgReceiver,
+      msg: "Hello! Nice to meet you.",
+    });
+    console.log("[sendMessageToMsgReceiver]res:", res);
+  };
+
+  const getMessageWithMsgReceiver = async () => {
+    const msgReceiver = "0x13a6D1fe418de7e5B03Fb4a15352DfeA3249eAA4";
+
+    const msgList = await xmtpClientRef.current?.getMessageWithUser({
+      user: msgReceiver,
+      options: {
+        endTime: new Date(),
+      },
+    });
+    console.log("getMessageWithMsgReceiver res:", msgList);
+  };
+
+  const getPersistedMessages = async () => {
+    const res = await xmtpClientRef.current?.getPersistedMessages();
+    console.log("getPersistedMessages res:", res);
+  };
+
   return (
     <div className="App">
       <button onClick={connect}>connect</button>
@@ -363,7 +421,6 @@ function Toolkits() {
             <LivepeerWidget
               address={address}
               livepeerClient={livepeerClientRef.current}
-              asset={asset}
               setAsset={setAsset}
             />
             {asset?.id && (
@@ -375,6 +432,13 @@ function Toolkits() {
           </LivepeerConfig>
         </>
       )}
+      <br />
+      <h2 className="label">Xmtp</h2>
+      <button onClick={isUserOnNetowork}>isUserOnNetowork</button>
+      <button onClick={sendMessageToMsgReceiver}>sendMessageToMsgReceiver</button>
+      <button onClick={getMessageWithMsgReceiver}>getMessageWithMsgReceiver</button>
+      <button onClick={getPersistedMessages}>getPersistedMessages</button>
+      <br />
     </div>
   );
 }
