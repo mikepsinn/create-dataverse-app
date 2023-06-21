@@ -6,79 +6,30 @@ import { Currency } from "@dataverse/runtime-connector";
 interface IProps {
   address?: string;
   livepeerClient: LivepeerClient;
-  asset: any;
   setAsset: Function;
 }
 
 export const LivepeerWidget = ({
   address,
   livepeerClient,
-  asset,
   setAsset,
 }: IProps) => {
   const [loading, setLoading] = useState(false);
   const [fileInput, setFileInput] = useState<any>(null);
   const [streamId, setStreamId] = useState<string>();
-  const { mutateAsync: createAssetAsync } = useCreateAsset(
-    fileInput
-      ? {
-          sources: [{ name: fileInput.name, file: fileInput }],
-        }
-      : null
-  );
 
-  const { mutateAsync: updateAssetAsync } = useUpdateAsset(
-    asset
-      ? {
-          assetId: asset.id,
-          storage: { ipfs: true },
-        }
-      : null
-  );
-
-  const handleFileUpload = async () => {
-    // stream name input check empty
+  const uploadVideo = async () => {
     if (!fileInput) throw new Error("Please select a file");
     try {
       setLoading(true);
-      const asset = await createAssetAsync();
-      console.log("created asset:", asset);
-      if (!asset) {
-        throw new Error("Asset undefined");
-      }
-      if ((asset[0] as any).status.errorMessage) {
-        throw new Error((asset[0] as any).status.errorMessage);
-      }
-      const res = await livepeerClient.persistAssetMeta(asset[0]);
-      console.log("livepeerClient createAssetMeta res: ", res);
-      setStreamId(res.streamId);
-      setAsset(asset[0]);
-      console.log("File uploaded successfully");
+      const res = await livepeerClient.uploadVideo(fileInput);
+      console.log("File uploaded successfully, res:", res);
+      setAsset(res.videoMeta);
+      setStreamId(res.stream.streamId);
       setLoading(false);
     } catch (err) {
       setLoading(false);
       console.error("Error while uploading file:", err);
-    }
-  };
-
-  const uploadFileToIpfs = async () => {
-    // stream name input check empty
-    if (!asset) throw new Error("Please create asset first");
-    try {
-      setLoading(true);
-      const asset = await updateAssetAsync();
-      console.log("updated asset:", asset);
-      if (!asset) {
-        throw new Error("Asset undefined");
-      }
-      const res = await livepeerClient.persistAssetMeta(asset);
-      console.log("livepeerClient updateAssetMeta res: ", res);
-      setAsset(asset);
-      console.log("Asset saved to Ipfs successfully");
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      console.error("Error while saving asset to Ipfs:", err);
     }
   };
 
@@ -91,17 +42,17 @@ export const LivepeerWidget = ({
     }
   };
 
-  const getAssetMetaList = async () => {
-    const res = await livepeerClient.getAssetMetaList();
-    console.log("getAssetMetaList res:", res);
+  const getVideoMetaList = async () => {
+    const res = await livepeerClient.getVideoMetaList();
+    console.log("getVideoMetaList res:", res);
   };
 
-  const monetizeAssetMeta = async () => {
+  const monetizeVideoMeta = async () => {
     if (!streamId || !address) {
       console.error("streamId or address undefined");
       return;
     }
-    await livepeerClient.monetizeAssetMeta({
+    await livepeerClient.monetizeVideoMeta({
       address,
       streamId,
       lensNickName: "jackieth",
@@ -116,20 +67,12 @@ export const LivepeerWidget = ({
 
   return (
     <div>
-      <input
-        type="file"
-        onChange={handleFileChange}
-        className="upload"
-        accept="video/*"
-      />
-      <button onClick={handleFileUpload} disabled={loading}>
-        UploadToLivepeer
+      <input type="file" onChange={handleFileChange} className="upload" />
+      <button onClick={uploadVideo} disabled={loading}>
+        uploadVideo
       </button>
-      <button onClick={uploadFileToIpfs} disabled={loading}>
-        UploadFileToIpfs
-      </button>
-      <button onClick={getAssetMetaList}>getAssetMetaList</button>
-      <button onClick={monetizeAssetMeta}>monetizeAssetMeta</button>
+      <button onClick={getVideoMetaList}>getVideoMetaList</button>
+      <button onClick={monetizeVideoMeta}>monetizeVideoMeta</button>
     </div>
   );
 };

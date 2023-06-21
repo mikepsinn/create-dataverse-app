@@ -1,6 +1,6 @@
 export const config = {
-  slug: "toolkits_test006", // app id, need to match this regular: `^[a-zA-Z][a-zA-Z0-9_]*$`
-  name: "toolkits_test006", // app name should NOT contain "-"
+  slug: "toolkits_test007", // app id, need to match this regular: `^[a-zA-Z][a-zA-Z0-9_]*$`
+  name: "toolkits_test007", // app name should NOT contain "-"
   logo: "http://no-logo.com",
   website: "", // you can use localhost:(port) for testing
   defaultFolderName: "Untitled",
@@ -39,11 +39,8 @@ export const config = {
       isPublicDomain: false,
       schemaName: "livepeerasset.graphql",
       encryptable: [
-        "asset_id",
         "storage",
         "playback_id",
-        "playback_url",
-        "download_url",
       ],
     },
     {

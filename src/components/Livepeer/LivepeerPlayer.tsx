@@ -7,28 +7,23 @@ interface IProps {
 }
 
 export const LivepeerPlayer = ({ reactClient, playbackId }: IProps) => {
-  const submitPlaybackId = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
+  console.log("playId:", playbackId);
+  console.log("reactClient:", reactClient);
 
   return (
-    <LivepeerConfig client={reactClient}>
-      {playbackId && (
-        <Player
-          title="Waterfalls"
-          playbackId={playbackId}
-          showPipButton
-          showTitle={false}
-          aspectRatio="16to9"
-          controls={{
-            autohide: 3000,
-          }}
-          theme={{
-            borderStyles: { containerBorderStyle: undefined },
-            radii: { containerBorderRadius: "10px" },
-          }}
-        />
-      )}
-    </LivepeerConfig>
+    <Player
+      title="Waterfalls"
+      playbackId={playbackId}
+      showPipButton
+      showTitle={false}
+      aspectRatio="16to9"
+      controls={{
+        autohide: 3000,
+      }}
+      theme={{
+        borderStyles: { containerBorderStyle: undefined },
+        radii: { containerBorderRadius: "10px" },
+      }}
+    />
   );
 };

@@ -99,7 +99,7 @@ function Toolkits() {
 
     if (livepeerModel) {
       const livepeerClient = new LivepeerClient({
-        apiKey: "19b7bc0c-84f8-4fd1-b8ac-db9fa56c0dff",
+        apiKey: "ba0a0c12-2dab-4131-9fb4-53b7316e4773",
         runtimeConnector,
         modelId: livepeerModel.stream_id,
         appName,
@@ -421,7 +421,6 @@ function Toolkits() {
             <LivepeerWidget
               address={address}
               livepeerClient={livepeerClientRef.current}
-              asset={asset}
               setAsset={setAsset}
             />
             {asset?.id && (
