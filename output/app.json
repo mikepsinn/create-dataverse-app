@@ -1,34 +1,52 @@
 {
   "createDapp": {
-    "id": "79b92119-a23b-45bf-a704-2fc784b4b5d6",
+    "id": "9c77f567-3fea-4bee-937d-fcf97e45d413",
     "streamIDs": [
       {
-        "name": "toolkits_test004_profile",
-        "stream_id": "kjzl6hvfrbw6c7uo6pyluo9b2rwbdoqh7f92x9z9omicuim6jfqml0fzt9x5dnd",
+        "name": "toolkits_test006_pushchannel",
+        "stream_id": "kjzl6hvfrbw6cb949obx1fhsbexztb7ucq7oyvhbyirvk2bfqxt4l2zoczsml78",
+        "isPublicDomain": false,
+        "encryptable": []
+      },
+      {
+        "name": "toolkits_test006_pushchatmessage",
+        "stream_id": "kjzl6hvfrbw6c5uod3o3n3gxf2o6a4veymao7yfy72uqvg6ad8czjj2tndrvm8m",
+        "isPublicDomain": false,
+        "encryptable": ["link", "cid"]
+      },
+      {
+        "name": "toolkits_test006_table",
+        "stream_id": "kjzl6hvfrbw6camopaimtf0c8j3f4wbkomkdlvgy40pj5pgj4zdfqmwphat6tkt",
+        "isPublicDomain": false,
+        "encryptable": []
+      },
+      {
+        "name": "toolkits_test006_indexFiles",
+        "stream_id": "kjzl6hvfrbw6c69ctnv22fkvdv58hg5fvozgduyahyjltmu8hm9tyctj25v0hup",
+        "isPublicDomain": false,
+        "encryptable": null
+      },
+      {
+        "name": "toolkits_test006_profile",
+        "stream_id": "kjzl6hvfrbw6c8xdj2npwsw5horzw7jyu7c9gw46uos4vjqdzwe8850vqnn5rsn",
         "isPublicDomain": true,
         "encryptable": null
       },
       {
-        "name": "toolkits_test004_pushchatgpgkey",
-        "stream_id": "kjzl6hvfrbw6c8wqlwjxnflm5vb8d1t8yfw0coww3dl538la397o5lzj4gyfoxj",
+        "name": "toolkits_test006_xmtpkeycache",
+        "stream_id": "kjzl6hvfrbw6c5m3vfvsqiew7r7x4q9rr5785j88fez3zbw6nindn1h2h4mlasi",
         "isPublicDomain": false,
-        "encryptable": ["pgp_key"]
+        "encryptable": ["keys"]
       },
       {
-        "name": "toolkits_test004_indexFiles",
-        "stream_id": "kjzl6hvfrbw6c6nlb28ikcpnjrzyi2wojiczbko29e77ejdebomhskacmn8uelw",
-        "isPublicDomain": false,
-        "encryptable": null
-      },
-      {
-        "name": "toolkits_test004_post",
-        "stream_id": "kjzl6hvfrbw6c5yyg173tdv0g4mko23pdev3jdf4geji1ncypkv65bir6gbsboq",
+        "name": "toolkits_test006_post",
+        "stream_id": "kjzl6hvfrbw6c5gtq3jytr9ztifjxow1v7guy723zfj2cctauojwqg98a1o9402",
         "isPublicDomain": false,
         "encryptable": ["text", "images", "videos"]
       },
       {
-        "name": "toolkits_test004_livepeerasset",
-        "stream_id": "kjzl6hvfrbw6c777u02e7zqoy1ehlvrsiodavon43b4p5e3nicjbdlz623g812x",
+        "name": "toolkits_test006_livepeerasset",
+        "stream_id": "kjzl6hvfrbw6ca31456cflmk993pjm5xsot67b7kv77fhivn3trv9a7n5g9f789",
         "isPublicDomain": false,
         "encryptable": [
           "asset_id",
@@ -39,45 +57,39 @@
         ]
       },
       {
-        "name": "toolkits_test004_contentFolders",
-        "stream_id": "kjzl6hvfrbw6c7rbxxx27bdww1so6e1gb7lzwd7dw91bkr38hvmc3jcvsoo4nrc",
+        "name": "toolkits_test006_pushnotification",
+        "stream_id": "kjzl6hvfrbw6c7k952mkvwren2ahkr51mz6xzu12xt9lsm4mv5d1wksw7mjmkrj",
+        "isPublicDomain": false,
+        "encryptable": []
+      },
+      {
+        "name": "toolkits_test006_xmtpmessage",
+        "stream_id": "kjzl6hvfrbw6c5o4psia5dseye8aedr1pwbz174ls6071kg0kyhzszt5m87nrq4",
+        "isPublicDomain": false,
+        "encryptable": ["content"]
+      },
+      {
+        "name": "toolkits_test006_pushchatgpgkey",
+        "stream_id": "kjzl6hvfrbw6cb3wthc6lbiyylmgy0z2hovsu21yi6upr3mo314isk4oymwu99z",
+        "isPublicDomain": false,
+        "encryptable": ["pgp_key"]
+      },
+      {
+        "name": "toolkits_test006_indexFolders",
+        "stream_id": "kjzl6hvfrbw6c67s4fk39qahoe6e6h3lhd7sz37pls5jsjrpr14g4ses4nxnstt",
         "isPublicDomain": false,
         "encryptable": null
       },
       {
-        "name": "toolkits_test004_table",
-        "stream_id": "kjzl6hvfrbw6c7yf8pq1qnvram8qzgpog2w0t9ex02x9fi7lc5s8invf0swyo4n",
-        "isPublicDomain": false,
-        "encryptable": []
-      },
-      {
-        "name": "toolkits_test004_pushchannel",
-        "stream_id": "kjzl6hvfrbw6c600t75fd5w3lfak4phs29po8s7o3i76oi6gzhq8cm54tx76d0l",
-        "isPublicDomain": false,
-        "encryptable": []
-      },
-      {
-        "name": "toolkits_test004_pushnotification",
-        "stream_id": "kjzl6hvfrbw6c8f9i2l7kvs1evlavsabah2lnbnsh4ya4dz7b59d90pmab0jgoe",
-        "isPublicDomain": false,
-        "encryptable": []
-      },
-      {
-        "name": "toolkits_test004_pushchatmessage",
-        "stream_id": "kjzl6hvfrbw6c51daexjx6ekrktxl9pexvtwqv073sapwlmi7l0ierggy617ot0",
-        "isPublicDomain": false,
-        "encryptable": ["link", "cid"]
-      },
-      {
-        "name": "toolkits_test004_indexFolders",
-        "stream_id": "kjzl6hvfrbw6c9fb17d440mk4r7g24i0qlmf6sghatcyl2k3w97jup7a9y6kbxd",
+        "name": "toolkits_test006_contentFolders",
+        "stream_id": "kjzl6hvfrbw6c75d1flqr3vq6zt03ks27qioq0l3u6tm8ec6flcctczrbl8407i",
         "isPublicDomain": false,
         "encryptable": null
       }
     ],
     "website": "",
-    "name": "toolkits_test004",
-    "slug": "toolkits_test004",
+    "name": "toolkits_test006",
+    "slug": "toolkits_test006",
     "logo": "http://no-logo.com",
     "description": "",
     "defaultFolderName": "Untitled",
