@@ -1,6 +1,6 @@
 import { gql, GraphQLClient } from "graphql-request";
 import { config } from "../dataverse.config";
-import JSToYaml from "convert-yaml";
+import JSToYaml from "./tool";
 import { ethers } from "ethers";
 import { readModels, writeToOutput } from "./tool";
 import { CreateDappProps } from "./types";
