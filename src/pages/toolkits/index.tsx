@@ -368,12 +368,6 @@ function Toolkits() {
   const getMessageWithMsgReceiver = async () => {
     const msgReceiver = "0x13a6D1fe418de7e5B03Fb4a15352DfeA3249eAA4";
 
-    const user = {
-      user: msgReceiver,
-      opts: {
-        endTime: new Date(),
-      },
-    };
     const msgList = await xmtpClientRef.current?.getMessageWithUser({
       user: msgReceiver,
       options: {
@@ -381,6 +375,11 @@ function Toolkits() {
       },
     });
     console.log("getMessageWithMsgReceiver res:", msgList);
+  };
+
+  const getPersistedMessages = async () => {
+    const res = await xmtpClientRef.current?.getPersistedMessages();
+    console.log("getPersistedMessages res:", res);
   };
 
   return (
@@ -438,6 +437,7 @@ function Toolkits() {
       <button onClick={isUserOnNetowork}>isUserOnNetowork</button>
       <button onClick={sendMessageToMsgReceiver}>sendMessageToMsgReceiver</button>
       <button onClick={getMessageWithMsgReceiver}>getMessageWithMsgReceiver</button>
+      <button onClick={getPersistedMessages}>getPersistedMessages</button>
       <br />
     </div>
   );
