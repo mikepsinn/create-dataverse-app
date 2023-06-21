@@ -432,6 +432,7 @@ function Toolkits() {
           </LivepeerConfig>
         </>
       )}
+      <br />
       <h2 className="label">Xmtp</h2>
       <button onClick={isUserOnNetowork}>isUserOnNetowork</button>
       <button onClick={sendMessageToMsgReceiver}>sendMessageToMsgReceiver</button>
