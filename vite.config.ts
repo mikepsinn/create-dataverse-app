@@ -13,7 +13,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    exclude: ["@tableland/sqlparser"],
+    exclude: ["@tableland/sqlparser", "stream/web", "util/types"],
   },
   build: {
     target: "es2020",
