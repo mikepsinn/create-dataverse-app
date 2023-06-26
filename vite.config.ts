@@ -8,10 +8,12 @@ export default defineConfig({
     alias: {
       // buffer: "rollup-plugin-node-polyfills/polyfills/buffer-es6", // add buffer
       events: "rollup-plugin-node-polyfills/polyfills/events",
+      // stream: "rollup-plugin-node-polyfills/polyfills/stream",
+      // util: "rollup-plugin-node-polyfills/polyfills/util",
     },
   },
   optimizeDeps: {
-    exclude: ["@tableland/sqlparser"],
+    exclude: ["@tableland/sqlparser", "stream/web", "util/types"],
   },
   build: {
     target: "es2020",
@@ -22,6 +24,7 @@ export default defineConfig({
     host: "0.0.0.0",
     fs: {
       allow: ["/"],
+      strict: false,
     },
   },
   define: {

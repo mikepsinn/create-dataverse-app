@@ -108,7 +108,7 @@ We provide simple hooks & components in `src/`. Now run the frontend to interact
 [External-Toolkits](https://github.com/dataverse-os/external-toolkits) are a set of tools to help developers integrate DataverseOS with other Web3 protocols, such as [Tableland](https://tableland.xyz/), [Livepeer](https://livepeer.org/), [Push](https://staging.push.org/). Check more details [here](https://github.com/dataverse-os/external-toolkits).
 
 To use these toolkits in your app, you need to add the models used by these protocols defined in `dataverse.config.ts.example` and add them to your
-`dataverse.config.ts`.
+`dataverse.config.ts`. And you also need to set your Livepeer API key in `.env` to use Livepeer normally.
 
 You can explore more features in `Toolkits Page`.
 
