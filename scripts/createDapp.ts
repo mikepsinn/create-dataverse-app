@@ -155,10 +155,12 @@ export const createDapp = async () => {
   try {
     const res: any = await client.request(query, { ...variables });
     writeToOutput(res);
+    console.log({ res });
     console.log(
       chalk.greenBright(
-        "Create successfully, now you can run 'pnpm dev' to run react demo."
-      )
+        "Create successfully, now you can run 'pnpm dev' to run react demo.\n"
+      ),
+      chalk.greenBright("You can check the app info in: output/app.json\n")
     );
     return res;
   } catch (error: any) {
