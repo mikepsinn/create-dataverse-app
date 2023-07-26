@@ -8,116 +8,55 @@
 
 # Create Dataverse App
 
-The starter kit for developers to build their own application on top of [Dataverse](https://dataverse-os.com) operating system.
+## Overview
 
-- Read [Developer Documentation](https://gitbook.dataverse-os.com/) to integrate [Runtime-SDK](https://github.com/dataverse-os/runtime-connector)
-- Download [Data Wallet](https://chrome.google.com/webstore/detail/dataverse/kcigpjcafekokoclamfendmaapcljead) to run OS Kernel and expose system calls to devs (Chrome version will be ready soon)
+This repository contains command-line tool and other convenient user-friendly
+package for developers to build a dataverse app.
 
-Note: Ensure your Metamask version is 10.28.3 or newer before you try data wallet.
+## dataverseos-cmd
 
-# Getting Started
+A command-line tool enable developers to init a dataverse app project and deploy
+to Dataverse os.
 
-## Environment
-
-Install the dependencies:
-
-```bash
-git clone https://github.com/dataverse-os/create-dataverse-app
-cd create-dataverse-app
-pnpm install
+```
+pnpm install -g dataverseos-cmd
 ```
 
-## Run demo
-  
-  ```bash
-  pnpm dev
-  ```
-you can see the demo app running at http://localhost:5173.
-<p align="center">
-<a href=" " target="_blank">
-<img src="https://s2.loli.net/2023/06/21/yYHCeZXA82PzJiV.png" width="300" alt="Dataverse logo">
-</a >
-</p >
+After installation, use `--help` to see more features.
 
-## Publish Your App
-
-Set your dApp private key in `.env` and open `dataverse.config.ts` to check configurable variables:
-
-```typescript
-export const config = {
-  slug: ...,
-  name: ...,
-  logo: ...,
-  website: ...,
-  defaultFolderName: ...,
-  description: ...,
-  models: [...],
-  ceramicUrl: ...
-};
+```
+dataverseos --help
 ```
 
-These are basic information for your dApp, please update fields of `slug` and `name`. You can customize dApp's business logic with `models` field. Here is an example: 
+This command-line tool is the entry point for interacting with our Dataverse OS.
+Developers who want to access the powerful features of Dataverse OS need to
+install it.
 
-```typescript
-models: [
-    {
-      isPublicDomain: false,
-      schemaName: "post.graphql",
-      encryptable: ["text", "images", "videos"],
-    },
-    {
-      isPublicDomain: true,
-      schemaName: "profile.graphql",
-    },
-  ],
+## model-parser
+
+When developers run in a existing dataverse app.
+
+```
+dataverseos deploy
 ```
 
-The `schemaName` links to the corresponding `models/_.graphql` file, defining your [ComposeDB](https://composedb.js.org/docs/0.4.x/guides/data-modeling/schemas) models & schemas. By default, you need to set `isPublicDomain=false` to ensure cross-app data security. If you set `isPublicDomain=true`, another dApp can compose this data model, indexing public data from your databases. 
+`output/app.json` will be generated locally, which contains various detailed
+information about this deployed app.
 
-You can also select which Ceramic endpoint your dApp is connecting to, to store data models and actual user data. App data on dataverse test ceramic node could be cleared regularly, so do NOT put anything important on test network. If you are running a production-ready dApp, you are suggested to run your own Ceramic node. You can deploy your own ceramic node using our tools [dapp-backend](https://github.com/dataverse-os/dapp-backend). Note that if your want to use your own ceramic, you need to ensure the url is accessible.
+In the data structure of this JSON, some properties such as `modelId` may have
+nested levels, so the `model-parser` package is needed to facilitate developers
+in retrieving key information from `output/app.json`.
 
-Finally you can publish your dApp: 
+This package will be automatically included in package dependencies of the
+inited(`dataverseos init <app>`) dataverse app project.
 
-```bash
-pnpm create-dataverse-app
-```
-This will deploy models to ceramic node you specify, and register data resources to DappTable. You can find resourceIDs in `output/app.json`, including your specific logic as well as file system. 
+## dapp-table-client
 
-## Interact with Deployed App
+This is a client for retrieving Dataverse DApp information, creating Dataverse
+DApps, and updating Dataverse DApps. The main exposed methods are as follows:
 
-We provide simple hooks & components in `src/`. Now run the frontend to interact with your dApp logic: 
-
-```typescript
-  // Connect user's wallet
-  const { connectWallet } = useWallet();
-
-  // Event streams
-  const {
-    pkh,
-    createCapability,
-    loadStreams,
-    createPublicStream,
-    createEncryptedStream,
-    createPayableStream,
-    monetizeStream,
-    unlockStream,
-    updateStream,
-  } = useStream();
-```
-## Use toolkits
-[External-Toolkits](https://github.com/dataverse-os/external-toolkits) are a set of tools to help developers integrate DataverseOS with other Web3 protocols, such as [Tableland](https://tableland.xyz/), [Livepeer](https://livepeer.org/), [Push](https://staging.push.org/). Check more details [here](https://github.com/dataverse-os/external-toolkits).
-
-To use these toolkits in your app, you need to add the models used by these protocols defined in `dataverse.config.ts.example` and add them to your
-`dataverse.config.ts`. And you also need to set your Livepeer API key in `.env` to use Livepeer normally.
-
-You can explore more features in `Toolkits Page`.
-
-<p align="center">
-<a href=" " target="_blank">
-<img src="https://s2.loli.net/2023/06/19/CveOImi4LswYX6D.png" width="300" alt="Dataverse logo">
-</a >
-</p >
-
-# Contributing
-
-Contributions are always welcome! Open a PR or an issue!
+- getFileSystemModels
+- getDapp
+- getDapps
+- createDapp
+- updateDapp

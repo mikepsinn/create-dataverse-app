@@ -1,5 +1,4 @@
 dist
 node_modules
-scripts/build
 pnpm-lock.yaml
-.env
+package-lock.json
