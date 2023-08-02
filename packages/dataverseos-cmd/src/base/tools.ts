@@ -34,20 +34,13 @@ export class JSToYaml {
   public static stringify(data: any): JSToYamlResult {
     const result = { value: "" } as JSToYamlResult;
     const type = this.getType(data);
-    switch (type) {
-      case YamlType.boolean:
-      case YamlType.multilines:
-      case YamlType.null:
-      case YamlType.number:
-      case YamlType.string:
-        result.error = new Error("Must be an object or an array");
-        return result;
-    }
 
     if (type === YamlType.array) {
       this.convertFromArray(data, result, 0);
-    } else {
+    } else if (type === YamlType.object || type === YamlType.emptyObject) {
       this.convertFromObject(data, result, 0);
+    } else {
+      result.error = new Error("Must be an object or an array");
     }
 
     return result;
@@ -62,9 +55,7 @@ export class JSToYaml {
       result.value += `${this.spacingStart}${this.spacing.repeat(deep)}- `;
       const type: YamlType = this.getType(value);
       switch (type) {
-        case YamlType.null:
-        case YamlType.number:
-        case YamlType.boolean:
+        case YamlType.boolean || YamlType.null || YamlType.number:
           result.value += `${value}\n`;
           break;
         case YamlType.string:
@@ -103,45 +94,41 @@ export class JSToYaml {
     deep: number,
   ) {
     for (const propertyName of Object.keys(data)) {
-      if (data[propertyName]) {
-        const value = data[propertyName];
-        const type: YamlType = this.getType(value);
-        result.value += `${this.spacingStart}${this.spacing.repeat(
-          deep,
-        )}${this.normalizeKey(propertyName)}: `;
-        switch (type) {
-          case YamlType.null:
-          case YamlType.number:
-          case YamlType.boolean:
-            result.value += `${value}\n`;
-            break;
-          case YamlType.string:
-            result.value += `${this.normalizeString(value)}\n`;
-            break;
-          case YamlType.multilines:
-            result.value += `|-\n`;
-            value.split("\n").forEach((line: string) => {
-              result.value += `${this.spacingStart}${this.spacing.repeat(
-                deep + 1,
-              )}${line}\n`;
-            });
-            break;
-          case YamlType.array:
-            if (value.length) {
-              result.value += "\n";
-              this.convertFromArray(value, result, deep);
-            } else {
-              result.value += "[]\n";
-            }
-            break;
-          case YamlType.emptyObject:
-            result.value += `{}\n`;
-            break;
-          default:
+      const value = data[propertyName];
+      const type: YamlType = this.getType(value);
+      result.value += `${this.spacingStart}${this.spacing.repeat(
+        deep,
+      )}${this.normalizeKey(propertyName)}: `;
+      switch (type) {
+        case YamlType.boolean || YamlType.null || YamlType.number:
+          result.value += `${value}\n`;
+          break;
+        case YamlType.string:
+          result.value += `${this.normalizeString(value)}\n`;
+          break;
+        case YamlType.multilines:
+          result.value += `|-\n`;
+          value.split("\n").forEach((line: string) => {
+            result.value += `${this.spacingStart}${this.spacing.repeat(
+              deep + 1,
+            )}${line}\n`;
+          });
+          break;
+        case YamlType.array:
+          if (value.length) {
             result.value += "\n";
-            this.convertFromObject(value, result, deep + 1);
-            break;
-        }
+            this.convertFromArray(value, result, deep);
+          } else {
+            result.value += "[]\n";
+          }
+          break;
+        case YamlType.emptyObject:
+          result.value += `{}\n`;
+          break;
+        default:
+          result.value += "\n";
+          this.convertFromObject(value, result, deep + 1);
+          break;
       }
     }
   }

@@ -1,6 +1,6 @@
 {
   "name": "create-dataverse-app",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "CLI for dataverse OS interaction",
   "main": "dist/index.js",
   "model": "dist/index.js",
@@ -18,7 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "@composedb/devtools": "^0.4.4",
-    "@dataverse/dapp-table-client": "^1.0.5",
+    "@dataverse/dapp-table-client": "^1.0.6",
     "chalk": "^4.1.2",
     "commander": "11.0.0",
     "crlf": "^1.1.1",
