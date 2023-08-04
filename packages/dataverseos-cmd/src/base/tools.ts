@@ -55,8 +55,11 @@ export class JSToYaml {
       result.value += `${this.spacingStart}${this.spacing.repeat(deep)}- `;
       const type: YamlType = this.getType(value);
       switch (type) {
-        case YamlType.boolean || YamlType.null || YamlType.number:
+        case YamlType.boolean || YamlType.number:
           result.value += `${value}\n`;
+          break;
+        case YamlType.null:
+          result.value += `null\n`;
           break;
         case YamlType.string:
           result.value += `${this.normalizeString(value)}\n`;
@@ -100,8 +103,11 @@ export class JSToYaml {
         deep,
       )}${this.normalizeKey(propertyName)}: `;
       switch (type) {
-        case YamlType.boolean || YamlType.null || YamlType.number:
+        case YamlType.boolean || YamlType.number:
           result.value += `${value}\n`;
+          break;
+        case YamlType.null:
+          result.value += `null\n`;
           break;
         case YamlType.string:
           result.value += `${this.normalizeString(value)}\n`;
