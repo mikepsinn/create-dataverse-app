@@ -11,7 +11,7 @@
 ## Install
 
 ```
-pnpm install -g dataverseos-cmd
+pnpm install -g create-dataverse-app
 ```
 
 Then check version:
