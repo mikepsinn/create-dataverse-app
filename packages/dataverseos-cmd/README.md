@@ -1,12 +1,16 @@
 <br/>
 <p align="center">
 <a href=" " target="_blank">
-<img src="./logo.svg" width="180" alt="Dataverse logo">
+<img src="https://bafybeifozdhcbbfydy2rs6vbkbbtj3wc4vjlz5zg2cnqhb2g4rm2o5ldna.ipfs.w3s.link/dataverse.svg" width="180" alt="Dataverse logo">
 </a >
 </p >
 <br/>
 
 # dataverseos-cmd
+
+[![npm version](https://img.shields.io/npm/v/create-dataverse-app.svg)](https://www.npmjs.com/package/create-dataverse-app)
+![npm](https://img.shields.io/npm/dw/create-dataverse-app)
+[![License](https://img.shields.io/npm/l/create-dataverse-app.svg)](https://github.com/dataverse-os/hooks/blob/main/LICENSE.md)
 
 ## Install
 
