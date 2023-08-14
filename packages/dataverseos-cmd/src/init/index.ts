@@ -188,6 +188,8 @@ function checkIsGitInstalled() {
 }
 
 function reconstructExampleCode(targetFolder: string) {
+  fs.copySync(`./packages/${targetFolder}`, `./${targetFolder}`);
+
   fs.readdirSync(".", { withFileTypes: true }).forEach(entry => {
     const entryPath = entry.name;
     if (entryPath !== targetFolder) {
@@ -206,5 +208,4 @@ function reconstructExampleCode(targetFolder: string) {
   });
 
   fs.rmSync(targetFolder, { recursive: true });
-  // fs.rmSync("output", { recursive: true });
 }
