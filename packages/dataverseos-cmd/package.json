@@ -1,6 +1,6 @@
 {
   "name": "create-dataverse-app",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "CLI for dataverse OS interaction",
   "main": "dist/index.js",
   "model": "dist/index.js",
@@ -19,9 +19,11 @@
   "dependencies": {
     "@composedb/devtools": "^0.4.4",
     "@dataverse/dapp-table-client": "^1.0.6",
+    "cartonne": "^2.2.0",
     "chalk": "^4.1.2",
     "commander": "11.0.0",
     "crlf": "^1.1.1",
+    "dag-jose": "^4.0.0",
     "ethers": "5",
     "fs-extra": "^10.0.0",
     "graphql": "16.6.0",
