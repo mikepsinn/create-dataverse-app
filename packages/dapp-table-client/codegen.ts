@@ -1,7 +1,7 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: "https://gateway.dev.dataverse.art/v1/dapp-table/graphql",
+  schema: "https://gateway.dataverse.art/v1/dapp-table/graphql",
   documents: "src/**/*.gql",
   generates: {
     "src/__generated__/types.ts": {

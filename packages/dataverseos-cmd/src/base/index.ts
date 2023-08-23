@@ -9,7 +9,7 @@ import { JSToYaml } from "./tools.js";
 import { CreateDappProps, Operation, UpdateDappProps } from "./types.js";
 import { createAbstractCompositeDefinition } from "@composedb/devtools";
 
-const DATAVERSE_ENDPOINT = "https://gateway.dev.dataverse.art/v1/dapp-table";
+const DATAVERSE_ENDPOINT = "https://gateway.dataverse.art/v1/dapp-table";
 
 const client = new GraphQLClient(`${DATAVERSE_ENDPOINT}/graphql`, {});
 

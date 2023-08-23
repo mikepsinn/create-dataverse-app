@@ -3,7 +3,7 @@ import { Dapp, DeployDappInput, Message, getSdk } from "./__generated__/types";
 
 const DAPP_TABLE_ENDPOINT =
   process.env.DAPP_TABLE_ENDPOINT ||
-  "https://gateway.dev.dataverse.art/v1/dapp-table";
+  "https://gateway.dataverse.art/v1/dapp-table";
 
 export const client = new GraphQLClient(`${DAPP_TABLE_ENDPOINT}/graphql`);
 
