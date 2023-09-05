@@ -36,6 +36,12 @@ This command-line tool is the entry point for interacting with our Dataverse OS.
 Developers who want to access the powerful features of Dataverse OS need to
 install it.
 
+### Create an App
+
+```
+dataverseos init my-datverse-app
+```
+
 ## model-parser
 
 [![npm version](https://img.shields.io/npm/v/@dataverse/model-parser.svg)](https://www.npmjs.com/package/@dataverse/model-parser)
